@@ -8,10 +8,10 @@ Classroom Notifier aims to send automated notification emails when any post in a
 Download `Classroom Notifier.py`, `mail_deleted.html`, and `mail_edited.html` and put them to a specified directory.
 
 #### 2. Add an `.env` file to the directory where you put the other files and add the following code to the file.
-* `google_id =` your google account **(with @gmail.com)**
-* `google_pw =` your google account password
-* `naver_id =` your naver account **(with @naver.com)**
-* `naver_pw =` your naver account password
+* `google_id =` your Google account **(with @gmail.com)**
+* `google_pw =` your Google account password
+* `naver_id =` your NAVER account **(with @naver.com)**
+* `naver_pw =` your NAVER account password
 * `link =` link of your Google Classroom
 * `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/`]**
 
