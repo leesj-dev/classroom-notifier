@@ -17,6 +17,7 @@ google_pw = os.getenv("google_pw")
 naver_id = os.getenv("naver_id")
 naver_pw = os.getenv("naver_pw")
 linkstr = os.getenv("link")
+file_path = os.getenv("file_path")
 
 
 # 그래픽 자료형
@@ -30,7 +31,8 @@ imgdict = {
 
 # 구글 로그인 차단 우회
 def init_driver():
-    driver = uc.Chrome(driver_executable_path='/Users/leesj/Documents/VS Code/classroom-notifier/chromedriver')
+    chromedriver_path = file_path + "/chromedriver"
+    driver = uc.Chrome(driver_executable_path = chromedriver_path)
     driver.get(link)
     return driver
 
@@ -345,8 +347,8 @@ def MsgEdited():
         driver.find_element(By.XPATH, '//*[@id="yDmH0d"]/div[9]/div/div/span[1]').click()
         driver.find_element(By.XPATH, '//*[@id="yDmH0d"]/div[9]/div/div/span[1]').send_keys(Keys.RETURN)
         post_postlink = pyperclip.paste()
-
-        message = open("/Users/leesj/Documents/VS Code/classroom-notifier/mail_edited.html", "r", encoding="utf-8").read()
+        mailedit_path = file_path + "/mail_edited.html"
+        message = open(mailedit_path, "r", encoding="utf-8").read()
 
         if post_type == "공지사항":
             message = message.replace("[[body]]", post_body_HTML)
@@ -391,8 +393,8 @@ def MsgRemoved():
         post_body_HTML = val[3]
         post_body_text = val[4]
         del_date = datetime.now(timezone('Asia/Seoul')).strftime('%-m월 %-d일')
-
-        message = open("/Users/leesj/Documents/VS Code/classroom-notifier/mail_deleted.html", "r", encoding="utf-8").read()
+        maildel_path = file_path + "/mail_deleted.html"
+        message = open(maildel_path, "r", encoding="utf-8").read()
 
         if post_type == "공지사항":
             message = message.replace("[[body]]", post_body_HTML)
