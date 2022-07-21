@@ -7,7 +7,7 @@ Classroom Notifier aims to send automated notification emails when any post in a
 #### 1. Download the required files.
 Download `Classroom Notifier.py`, `mail_deleted.html`, and `mail_edited.html` and put them to a specified directory.
 
-#### 2. Add an `.env` file to the directory where you put the other files and add the following code to the file.
+#### 2. Add a `.env` file to the directory where you put the other files and add the following code to the file.
 * `google_id =` your Google account **(with @gmail.com)**
 * `google_pw =` your Google account password
 * `naver_id =` your NAVER account **(with @naver.com)**
