@@ -8,14 +8,14 @@ Classroom Notifier aims to send automated notification emails when any post in a
 Download `Classroom Notifier.py`, `mail_deleted.html`, and `mail_edited.html` and put them to a specified directory.
 
 #### 2. Add an `.env` file to the directory where you put the other files and add the following code to the file.
-* `google_id =` your google account (with @gmail.com)
+* `google_id =` your google account **(with @gmail.com)**
 * `google_pw =` your google account password
-* `naver_id =` your naver account (with @naver.com)
+* `naver_id =` your naver account **(with @naver.com)**
 * `naver_pw =` your naver account password
 * `link =` link of your Google Classroom
 
 #### 3. Check your Google Chrome version and download chromedriver.
-To check your Chrome version on your desktop, open Chrome and click the ⋮ button in the top right. Go to Help > About Google Chrome.
+To check your Chrome version on your desktop, open Chrome and click the `⋮` button in the top right. Go to Help > About Google Chrome.
 
 Visit https://chromedriver.chromium.org/downloads and download the chromedriver that matches your Chrome version and operating system. Add your downloaded chromedriver to the directory where you put the other files.
 
