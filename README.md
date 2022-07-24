@@ -52,4 +52,4 @@ Open Terminal and type `source "your file path"/run.sh`. For example, if your fi
 You may need to quit each Chrome window after you stop executing the code. The chromedriver windows *do not* get closed automatically.
 
 #### Note
-You can edit line No. 34 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
+You can edit line No. 38 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
