@@ -32,7 +32,7 @@ imgdict = {
 # 구글 로그인 차단 우회
 def init_driver():
     chromedriver_path = file_path + "/chromedriver"
-    driver = uc.Chrome(driver_executable_path = chromedriver_path)
+    driver = uc.Chrome(driver_executable_path=chromedriver_path)
     driver.get(link)
     return driver
 
@@ -66,26 +66,20 @@ def Scroll():
 
 def elementFinder(number, type, path, tofind):
     if type == "main" or type == "공지사항":
-        total = "(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path
-
+        total = ("(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path)
     elif type == "link_copy":
         total = "(//*[@class='z80M1 FeRvI'])[last()-1]" + path
-        
     else:
         total = "(//*[@class='fJ1Vac'])[last()]" + path
-    
 
     if tofind == "self":
-        result = driver.find_element(By. XPATH, total)
-
+        result = driver.find_element(By.XPATH, total)
     elif tofind == "text":
-        result = driver.find_element(By. XPATH, total).text
-        
+        result = driver.find_element(By.XPATH, total).text
     elif tofind == "click":
-        result = driver.find_element(By. XPATH, total).click()
-
+        result = driver.find_element(By.XPATH, total).click()
     else:
-        result = driver.find_element(By. XPATH, total).get_attribute(tofind)
+        result = driver.find_element(By.XPATH, total).get_attribute(tofind)
 
     return result
 
@@ -101,7 +95,6 @@ def typeExtractor(postnum_str):
 def uploaderExtractor(postnum_str, type):
     if type == "공지사항":
         uploader = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/div/div/span", "text")
-    
     else:
         uploader = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[1]", "text")
 
@@ -114,15 +107,14 @@ def initialDateExtractor(postnum_str, type):
 
     if type == "공지사항":
         mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
-
     else:
         mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
 
     if end in mod:
-        date = mod[0 : mod.find(end) -1]
+        date = mod[0 : mod.find(end) - 1]
     else:
         date = mod
-    
+
     return date
 
 
@@ -133,10 +125,9 @@ def finalDateExtractor(postnum_str, type):
 
     if type == "공지사항":
         mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
-
     else:
         mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
-    
+
     if end in mod:
         date = mod[mod.find(start) + 1 : mod.find(end)]
     else:
@@ -149,7 +140,7 @@ def finalDateExtractor(postnum_str, type):
 def bodyExtractor(postnum_str, type, encoding):
     if type == "공지사항":
         body = elementFinder(postnum_str, type, "/div[1]/div[2]/div[1]/html-blob/span", encoding)
-       
+
     else:
         body1 = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[1]/h1/html-blob/span", encoding)
         try:
@@ -161,7 +152,7 @@ def bodyExtractor(postnum_str, type, encoding):
             body = body1
         else:
             body = body1 + "\n" + body2
-    
+
     return body
 
 
@@ -172,7 +163,7 @@ def xpathFinder(type, divnum, j):
 
     else:
         xpath = "/div[2]/div[2]/div[1]/div/div[" + j + "]/div/a"
-        
+
     return xpath
 
 
@@ -219,7 +210,7 @@ def attachExtractor(postnum_str, type):
                     i = i + 1
                 except:  # 첨부파일이 0개인 경우
                     break
-                
+
     return attach
 
 
@@ -251,7 +242,7 @@ def Process():
         try:
             errorchk = elementFinder(postnum_str, "main", "", "jsaction")
             driver.implicitly_wait(0.5)
-        except:     # 게시물이 삭제되었을 때 postmax에서 예외가 발생하기 때문
+        except:  # 게시물이 삭제되었을 때 postmax에서 예외가 발생하기 때문
             break
 
         if errorchk == None:
@@ -296,9 +287,9 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
         message = message.replace("[[body]]", post_body_HTML)
         post_smalltext = '<tr height="0"></tr>'
     else:
-        post_title = post_body_HTML.split('\n', 1)[0]   # \n을 기준으로 최대 1번 쪼갠 뒤 그 중 첫번째(0번째) 부분
+        post_title = post_body_HTML.split("\n", 1)[0]  # \n을 기준으로 최대 1번 쪼갠 뒤 그 중 첫번째(0번째) 부분
         message = message.replace("[[body]]", post_title)
-        post_smalltext = '<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split('\n', 1)[1] + '</td></tr>'
+        post_smalltext = ('<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split("\n", 1)[1] + "</td></tr>")
 
     if post_type == "공지사항" or post_type == "질문":
         message = message.replace("[[postposition]]", "을")
@@ -310,8 +301,8 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
     message = message.replace("[[room]]", post_room)
     message = message.replace("[[uploader]]", post_uploader)
     message = message.replace("[[type]]", post_type)
-    message = message.replace("[[date]]", post_or_del_date)     # 수정된 게시물: post_date, 삭제된 게시물: del_date
-    message = message.replace("[[postlink]]", post_postlink)    # 수정된 게시물에만 존재
+    message = message.replace("[[date]]", post_or_del_date)  # 수정된 게시물: post_date, 삭제된 게시물: del_date
+    message = message.replace("[[postlink]]", post_postlink)  # 수정된 게시물에만 존재
     message = message.replace("[[imgsrc]]", imgdict[post_type])
     message = message.replace("[[smalltext]]", post_smalltext)
 
@@ -370,11 +361,11 @@ def MsgRemoved():
         post_uploader = val[1]
         post_body_HTML = val[3]
         post_body_text = val[4]
-        del_date = datetime.now(timezone('Asia/Seoul')).strftime('%-m월 %-d일')
+        del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
         mail_path = file_path + "/mail_deleted.html"
 
         SendMsg("삭제", mail_path, post_room, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
-    
+
 
 # main 함수
 if __name__ == "__main__":
@@ -401,7 +392,7 @@ if __name__ == "__main__":
 
         if pdict_before != pdict_after:
             if len(pdict_before) > len(pdict_after):
-                print("삭제된 게시물 감지.")    # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                print("삭제된 게시물 감지.")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                 MsgRemoved()
                 print("메일 발신 완료.")
 
