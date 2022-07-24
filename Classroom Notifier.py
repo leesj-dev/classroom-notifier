@@ -160,7 +160,6 @@ def bodyExtractor(postnum_str, type, encoding):
 def xpathFinder(type, divnum, j):
     if type == "공지사항":
         xpath = "/div[1]/div[2]/div[2]/div[1]/div[" + divnum + "]/div[" + j + "]/a"
-
     else:
         xpath = "/div[2]/div[2]/div[1]/div/div[" + j + "]/div/a"
 
@@ -226,7 +225,6 @@ def Process():
         try:
             elementFinder(postnum_str, "main", "", "self")
             driver.implicitly_wait(0.5)
-
         except:
             postmax = postnum_int - 1
             break
@@ -347,7 +345,6 @@ def MsgEdited():
         elementFinder(key_str, "link_copy", "", "click")
         post_postlink = pyperclip.paste()
         mail_path = file_path + "/mail_edited.html"
-
         SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
@@ -363,7 +360,6 @@ def MsgRemoved():
         post_body_text = val[4]
         del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
         mail_path = file_path + "/mail_deleted.html"
-
         SendMsg("삭제", mail_path, post_room, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
 
 
