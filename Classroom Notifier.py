@@ -366,8 +366,8 @@ def MsgRemoved():
 
 # main 함수
 if __name__ == "__main__":
-    number = int(sys.argv[1])
-    link = link_dict[str(number)]
+    number = sys.argv[1]
+    link = link_dict[number]
     driver = init_driver()
     login(driver)
 
