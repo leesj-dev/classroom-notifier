@@ -48,8 +48,8 @@ Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remem
 Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh`.
 
 #### 8. Run `run.sh`.
-Open Terminal and type `source (your file path)/run.sh`.
+Open Terminal and type `source "your file path"/run.sh`. For example, if your files are located in `/Users/user/classroom-notifier`, then you need to type `source /Users/user/classroom-notifier/run.sh`.
 You may need to quit each Chrome window after you stop executing the code. The chromedriver windows *do not* get closed automatically.
 
 #### Note
-You can edit line 34 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
+You can edit line No. 34 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
