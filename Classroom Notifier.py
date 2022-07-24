@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from email.mime.text import MIMEText
 from pytz import timezone
 from datetime import datetime
