@@ -6,7 +6,9 @@ from datetime import datetime
 import undetected_chromedriver as uc
 import pyperclip
 import smtplib
+import json
 import time
+import sys
 import os
 
 # ID/PW (.env 파일에 따로 보관)
@@ -15,9 +17,11 @@ google_id = os.getenv("google_id")
 google_pw = os.getenv("google_pw")
 naver_id = os.getenv("naver_id")
 naver_pw = os.getenv("naver_pw")
-linkstr = os.getenv("link")
 file_path = os.getenv("file_path")
 
+# 클래스룸 링크 (.json 파일에 보관)
+json_file = open(file_path + "/links.json")
+link_dict = json.load(json_file)
 
 # 그래픽 자료형
 imgdict = {
@@ -63,6 +67,7 @@ def Scroll():
     driver.execute_script("window.scrollTo(0, 0);")
 
 
+# xpath 경로 탐색
 def elementFinder(number, type, path, tofind):
     if type == "main" or type == "공지사항":
         total = ("(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path)
@@ -316,7 +321,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
         smtp.sendmail(naver_id, google_id, msg.as_string())
 
 
-# 메일 전송 제어
+# 게시물 수정 시
 def MsgEdited():
     post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
     set_before = set(pdict_before.items())
@@ -343,6 +348,7 @@ def MsgEdited():
         SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
+# 게시물 삭제 시
 def MsgRemoved():
     post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
     set_before = set(pdict_before.values())
@@ -360,10 +366,8 @@ def MsgRemoved():
 
 # main 함수
 if __name__ == "__main__":
-    linklst = linkstr.split(", ")
-    print("Links: ", linklst)
-    number = input("Select your desired link (nth item in list): ")
-    link = linklst[int(number) - 1]
+    number = int(sys.argv[1])
+    link = link_dict[str(number)]
     driver = init_driver()
     login(driver)
 
@@ -398,4 +402,4 @@ if __name__ == "__main__":
         else:
             print("변경사항 없음.")
 
-        pdict_before = pdict_after
+        pdict_before = pdict_after 
