@@ -146,11 +146,7 @@ def bodyExtractor(postnum_str, type, encoding):
             body2 = elementFinder(postnum_str, type, "/div[2]/div[1]/div[2]/html-blob/span", encoding)
         except:
             body2 = ""
-
-        if body2 == "":
-            body = body1
-        else:
-            body = body1 + "\n" + body2
+        body = body1 + "\n" + body2
 
     return body
 
