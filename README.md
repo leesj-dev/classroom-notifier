@@ -36,4 +36,4 @@ Visit https://chromedriver.chromium.org/downloads and download the chromedriver 
 You may need to quit the chromedriver windows after you stop executing the code. The chromedriver windows *do not* get closed automatically.
 
 #### Note
-You can edit line 33 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended for development purposes*.
+You can edit line 34 to be `driver = uc.Chrome()` instead of downloading chromedriver manually. Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended for development purposes*.
