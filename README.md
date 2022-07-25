@@ -12,7 +12,7 @@ pip install email
 pip install pytz
 pip install datetime
 pip install undetected_chromedriver
-pip install pyperclip
+pip install pyclip
 pip install smtplib
 ```
 
