@@ -182,7 +182,7 @@ def attachExtractor(postnum_str, type):
         except:
             pass
 
-    if flg == False:  # 첨부파일이 없거나 2개 이상인 경우
+    if flg is False:  # 첨부파일이 없거나 2개 이상인 경우
         if type == "공지사항":
             for divnum in ["1", "2"]:
                 i = 1
@@ -243,7 +243,7 @@ def Process():
         except:  # 게시물이 삭제되었을 때 postmax에서 예외가 발생하기 때문
             break
 
-        if errorchk == None:
+        if errorchk is None:
             post_type = "공지사항"
             post_uploader = uploaderExtractor(postnum_str, post_type)
             post_date = finalDateExtractor(postnum_str, post_type)
