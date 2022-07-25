@@ -403,4 +403,4 @@ if __name__ == "__main__":
         else:
             print("변경사항 없음.")
 
-        pdict_before = pdict_after 
+        pdict_before = pdict_after

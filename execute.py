@@ -27,4 +27,3 @@ if platform == "linux" or platform == "darwin":
 
 elif platform == "win32": # Windows
     print("Windows is not supported yet. We will update the code soon.")
-    
