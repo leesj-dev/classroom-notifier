@@ -14,13 +14,14 @@ pip install datetime
 pip install undetected_chromedriver
 pip install pyclip
 pip install smtplib
+pip install pyyaml
 ```
 
 #### 2. Enable SMTP on your NAVER account.
 Login to [NAVER Mail](https://mail.naver.com) and go to `환경설정 > POP3/SMTP 설정`. Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
 #### 3. Download the required files.
-Download `Classroom Notifier.py`, `execute.py`, `links.json`, `run.sh`, `mail_deleted.html`, and `mail_edited.html` and move them to a specific directory.
+Download `Classroom Notifier.py`, `execute.py`, `links.yaml`, `run.sh`, `mail_deleted.html`, and `mail_edited.html` and move them to a specific directory.
 
 #### 4. Add a `.env` file to the directory where you put the other files and add the following code to the file.
 * `google_id =` your Google account **(with @gmail.com)**
@@ -34,14 +35,13 @@ To check your Chrome version on your desktop, open Chrome and click the `⋮` bu
 
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system. Add your downloaded chromedriver to the directory where you put the other files.
 
-#### 6. Put your Google Classroom links in `links.json`.
-Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth.
+#### 6. Put your Google Classroom links in `links.yaml`.
+Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. You can add optional comments regarding the name of the classroom corresponding to the links.
 ```
-{
-    "1": "Google Classroom Link No. 1",
-    "2": "Google Classroom Link No. 2",
-    "3": "Google Classroom Link No. 3"
-}
+---
+'1': Google Classroom Link No. 1  # Classroom Name
+'2': Google Classroom Link No. 2  # Classroom Name
+'3': Google Classroom Link No. 3  # Classroom Name
 ```
 
 #### 7. Run `execute.py` to create `run.sh`.
