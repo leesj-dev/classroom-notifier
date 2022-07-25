@@ -1,12 +1,13 @@
 import os
-import json
+import yaml
 from dotenv import load_dotenv
 from sys import platform
 
 load_dotenv()
 file_path = os.getenv("file_path")
-json_file = open(file_path + "/links.json")
-link_dict = json.load(json_file)
+yaml_file = open(file_path + "/links.yaml")
+link_dict = yaml.safe_load(yaml_file)
+print(link_dict)
 max = len(link_dict)
 
 file_path = str(file_path)
