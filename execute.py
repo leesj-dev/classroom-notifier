@@ -10,7 +10,7 @@ max = len(link_dict)
 
 file_path = str(file_path)
 file_path = file_path.replace(" ", "\ ")
-command = "#!/usr/bin/env bash\n"
+command = "#!/bin/bash\n"
 
 for i in range(1, max + 1):
     command = command + "python3 " + file_path + "/Classroom\ Notifier.py " + str(i) + " &"
