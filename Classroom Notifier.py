@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from pytz import timezone
 from datetime import datetime
 import undetected_chromedriver as uc
-import pyperclip
+import pyclip
 import smtplib
 import json
 import time
@@ -343,7 +343,8 @@ def MsgEdited():
 
         time.sleep(1)
         elementFinder(key_str, "link_copy", "", "click")
-        post_postlink = pyperclip.paste()
+        post_postlink = pyclip.paste(text=True)
+        pyclip.clear()
         mail_path = file_path + "/mail_edited.html"
         SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
