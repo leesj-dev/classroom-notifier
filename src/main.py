@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from email.mime.text import MIMEText
 from pytz import timezone
 from datetime import datetime
+from sys import platform
 import undetected_chromedriver as uc
 import pyclip
 import smtplib
@@ -19,8 +20,14 @@ naver_id = os.getenv("naver_id")
 naver_pw = os.getenv("naver_pw")
 file_path = os.getenv("file_path")
 
+# 운영체제 확인
+if platform == "linux" or platform == "darwin":
+    slash = "/"
+elif platform == "win32":
+    slash = "\\"
+
 # 클래스룸 링크 (.ymal 파일에 보관)
-yaml_file = open(file_path + "/links.yaml")
+yaml_file = open(file_path + slash + "links.yaml")
 link_dict = yaml.safe_load(yaml_file)
 
 # 그래픽 자료형
@@ -34,7 +41,7 @@ imgdict = {
 
 # 구글 로그인 차단 우회
 def init_driver():
-    chromedriver_path = file_path + "/chromedriver"
+    chromedriver_path = file_path + slash + "chromedriver"
     driver = uc.Chrome(driver_executable_path=chromedriver_path)
     driver.get(link)
     return driver
@@ -345,7 +352,7 @@ def MsgEdited():
         elementFinder(key_str, "link_copy", "", "click")
         post_postlink = pyclip.paste(text=True)
         pyclip.clear()
-        mail_path = file_path + "/mail_edited.html"
+        mail_path = file_path + slash + "mail_edited.html"
         SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
@@ -361,7 +368,7 @@ def MsgRemoved():
         post_body_HTML = val[3]
         post_body_text = val[4]
         del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
-        mail_path = file_path + "/mail_deleted.html"
+        mail_path = file_path + slash + "mail_deleted.html"
         SendMsg("삭제", mail_path, post_room, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
 
 

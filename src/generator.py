@@ -5,19 +5,27 @@ from sys import platform
 
 load_dotenv()
 file_path = os.getenv("file_path")
-yaml_file = open(file_path + "/links.yaml")
-link_dict = yaml.safe_load(yaml_file)
-print(link_dict)
-max = len(link_dict)
+command = ""
 
-file_path = str(file_path)
-file_path = file_path.replace(" ", "\ ")
+def getMax(slash):
+    yaml_file = open(file_path + slash + "links.yaml")
+    link_dict = yaml.safe_load(yaml_file)
+    print(link_dict)
+    max = len(link_dict)
+
+    file_path = str(file_path)
+    file_path = file_path.replace(" ", slash + " ")
+
+    return max
 
 if platform == "linux" or platform == "darwin":
-    if platform == "linux": # Linux
+    slash = "/"
+    getMax(slash)
+
+    if platform == "linux":  # Linux
         command = "#!/bin/bash"
 
-    elif platform == "darwin": # Mac OS
+    elif platform == "darwin":  # Mac OS
         command = "#!/usr/bin/env bash"
 
     for i in range(1, max + 1):
@@ -26,5 +34,13 @@ if platform == "linux" or platform == "darwin":
     with open ('run.sh', 'w') as sh:
         sh.write(command)
 
-elif platform == "win32": # Windows
-    print("Windows is not supported yet. We will update the code soon.")
+elif platform == "win32":  # Windows
+    slash = "\\"
+    getMax(slash)
+
+    for i in range(1, max + 1):
+        command = command + 'start python3 "' + file_path + '\Classroom Notifier.py ' + str(i) + '"'
+        if i != max:
+            command = command + "\n"
+    with open ('run.bat', 'w') as bat:
+        bat.write(command)
