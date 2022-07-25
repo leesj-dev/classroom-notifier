@@ -21,7 +21,7 @@ if platform == "linux" or platform == "darwin":
         command = "#!/usr/bin/env bash"
 
     for i in range(1, max + 1):
-        command = command + "\npython3 " + file_path + "/Classroom\ Notifier.py " + str(i) + " &"
+        command = command + "\npython3 " + file_path + "/main.py " + str(i) + " &"
 
     with open ('run.sh', 'w') as sh:
         sh.write(command)
