@@ -21,7 +21,7 @@ naver_pw = os.getenv("naver_pw")
 file_path = os.getenv("file_path")
 
 # 운영체제 확인
-if platform == "linux" or platform == "darwin":
+if platform in ("linux", "darwin"):
     slash = "/"
 elif platform == "win32":
     slash = "\\"
@@ -41,14 +41,14 @@ imgdict = {
 # 색상 자료형 (클래스룸에서는 key만 구할 수 있음)
 colordict = {
   # room & 열기 # 선 & 원
-    "174ea6": "1967d2",  # Dark Blue
-    "137333": "1e8e3e",  # Green 
-    "b80672": "e52592",  # Pink 
-    "c26401": "e8710a",  # Orange 
-    "007b83": "129eaf",  # Mint 
-    "7627bb": "9334e6",  # Purple 
-    "1967d2": "4285f4",  # Light Blue 
-    "202124": "5f6368",  # Grey 
+    "#174ea6": "#1967d2",  # Dark Blue
+    "#137333": "#1e8e3e",  # Green 
+    "#b80672": "#e52592",  # Pink 
+    "#c26401": "#e8710a",  # Orange 
+    "#007b83": "#129eaf",  # Mint 
+    "#7627bb": "#9334e6",  # Purple 
+    "#1967d2": "#4285f4",  # Light Blue 
+    "#202124": "#5f6368",  # Grey 
 }
 
 # 구글 로그인 차단 우회
@@ -124,7 +124,7 @@ def elementFinder(number, type, path, tofind):
     return result
 
 
-# 게시물 종류 추출 (단, 공지은 제외)
+# 게시물 종류 추출 (단, 공지는 제외)
 def typeExtractor(postnum_str):
     title = elementFinder(postnum_str, "main", "/div[1]/div/div[3]/div/div/span", "text")
     type = title[title.find("게시") - 3 : title.find("게시") - 1]
@@ -326,7 +326,7 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
         message = message.replace("[[body]]", post_title)
         post_smalltext = ('<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split("\n", 1)[1] + "</td></tr>")
 
-    if post_type in ("공지", "질문"):
+    if post_type == "질문":
         message = message.replace("[[postposition]]", "을")
     else:
         message = message.replace("[[postposition]]", "를")
@@ -432,15 +432,11 @@ if __name__ == "__main__":
             
             else:
                 if len(pdict_1) > len(pdict_3):
-                    print("pdict_1 = ", pdict_1)
-                    print("pdict_3 = ", pdict_3)
                     print("삭제된 게시물 감지.")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                     MsgRemoved(pdict_1, pdict_3)
                     print("메일 발신 완료.")
 
                 elif len(pdict_1) == len(pdict_3):
-                    print("pdict_1 = ", pdict_1)
-                    print("pdict_3 = ", pdict_3)
                     print("변경된 게시물 감지.")
                     MsgEdited(pdict_1, pdict_3)
                     print("메일 발신 완료.")

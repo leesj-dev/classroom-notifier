@@ -14,7 +14,7 @@ def getMax(file_path, slash):
 
     return max
 
-if platform == "linux" or platform == "darwin":
+if platform in ("linux", "darwin"):
     slash = "/"
     max = getMax(file_path, slash)
     file_path_str = str(file_path)
