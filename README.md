@@ -23,7 +23,7 @@ Login to [NAVER Mail](https://mail.naver.com) and go to `환경설정 > POP3/SMT
 Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
 #### 3. Download the required files.
-Download `Classroom Notifier.py`, `execute.py`, `links.yaml`, `run.sh`, `mail_deleted.html`, and `mail_edited.html` and move them to a specific directory.
+Download the entire repo as a .zip file. Open folder `src` and move every file to a specific directory.
 
 #### 4. Add a `.env` file to the directory where you put the other files and add the following code to the file.
 * `google_id =` your Google account **(with @gmail.com)**
