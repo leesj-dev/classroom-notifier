@@ -38,6 +38,18 @@ imgdict = {
     "과제": "https://ci3.googleusercontent.com/proxy/8nr0SU4M3K6mq9EASltstSjUrUfTv13LXLM_xIJr6oD-GyeiECMFXG3ze_-oG9P-EOU9MGJRgMQ_HknJ8by3ZuiZlF4EevHowhFySEamH6uWEg1ct-LbbVxkojI3fo0lTDWSscyay8IHOuSnKbtN-UxnHx1_D9n3QY8IyFo=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/assignment/v6/white-48dp/2x/gm_assignment_white_48dp.png",
 }
 
+# 색상 자료형 (클래스룸에서는 key만 구할 수 있음)
+colordict = {
+  # room & 열기 # 선 & 원
+    "174ea6": "1967d2",  # Dark Blue
+    "137333": "1e8e3e",  # Green 
+    "b80672": "e52592",  # Pink 
+    "c26401": "e8710a",  # Orange 
+    "007b83": "129eaf",  # Mint 
+    "7627bb": "9334e6",  # Purple 
+    "1967d2": "4285f4",  # Light Blue 
+    "202124": "5f6368",  # Grey 
+}
 
 # 구글 로그인 차단 우회
 def init_driver():
@@ -75,10 +87,26 @@ def Scroll():
     driver.execute_script("window.scrollTo(0, 0);")
 
 
+# 색상 추출
+def colorExtractor():
+    color_rgba = driver.find_element(By.XPATH, "(//*[@class='xHPsid'])[last()]/div[1]/a").value_of_css_property("color")
+    color_rgba = color_rgba[color_rgba.find("(") + 1 : color_rgba.find(")")]
+    color_list = color_rgba.split(', ')
+    color_list = color_list[0:3]  # rgba -> rgb
+    
+    for i in range(0, len(color_list)):
+        color_list[i] = int(color_list[i])
+
+    color_tuple = tuple(color_list)
+    color_hex = '#%02x%02x%02x' % color_tuple
+    
+    return color_hex
+
+
 # xpath 경로 탐색
 def elementFinder(number, type, path, tofind):
     if type in ("main", "공지"):
-        total = ("(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path)
+        total = "(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path
     elif type == "link_copy":
         total = "(//*[@class='z80M1 FeRvI'])[last()-1]" + path
     else:
@@ -287,7 +315,7 @@ def Process():
 
 
 # 메일 내용 가공 및 전송
-def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlink, post_or_del_date, post_body_HTML, post_body_text):
+def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_or_del_date, post_body_HTML, post_body_text):
     message = open(mail_path, "r", encoding="utf-8").read()
 
     if post_type == "공지":
@@ -305,7 +333,9 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
     message = message.replace("[[google_id]", google_id)
     message = message.replace("[[roomlink]]", link)
-    message = message.replace("[[room]]", post_room)
+    message = message.replace("[[room]]", room_name)
+    message = message.replace("[[color1]]", room_color)
+    message = message.replace("[[color2]]", colordict[room_color])
     message = message.replace("[[uploader]]", post_uploader)
     message = message.replace("[[type]]", post_type)
     message = message.replace("[[date]]", post_or_del_date)  # 수정된 게시물: post_date, 삭제된 게시물: del_date
@@ -332,7 +362,8 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
 # 게시물 수정 시
 def MsgEdited(pdict_before, pdict_after):
-    post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
+    room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
+    room_color = colorExtractor()
     set_before = set(pdict_before.items())
     set_after = set(pdict_after.items())
     diff = dict(set_after - set_before)
@@ -355,12 +386,13 @@ def MsgEdited(pdict_before, pdict_after):
         post_postlink = pyclip.paste(text=True)
         pyclip.clear()
         mail_path = file_path + slash + "src" + slash + "mail_edited.html"
-        SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
+        SendMsg("수정", mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
 # 게시물 삭제 시
 def MsgRemoved(pdict_before, pdict_after):
-    post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
+    room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
+    room_color = colorExtractor()
     set_before = set(pdict_before.values())
     set_after = set(pdict_after.values())
     diff = list(set_before - set_after)
@@ -371,7 +403,7 @@ def MsgRemoved(pdict_before, pdict_after):
         post_body_text = val[4]
         del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
         mail_path = file_path + slash + "src" + slash + "mail_deleted.html"
-        SendMsg("삭제", mail_path, post_room, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
+        SendMsg("삭제", mail_path, room_name, room_color, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
 
 
 # main 함수
@@ -397,8 +429,6 @@ if __name__ == "__main__":
 
             if pdict_1 == pdict_3:
                 print("Bug detected.")
-                print("pdict_1 = ", pdict_1)
-                print("pdict_2 = ", pdict_2)
             
             else:
                 if len(pdict_1) > len(pdict_3):
