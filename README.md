@@ -10,9 +10,8 @@ Login to [NAVER Mail](https://mail.naver.com) and go to `환경설정 > POP3/SMT
 Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
 #### 2. Download the files and install the required packages.
-Download the entire repo as a .zip file and unzip it.
-Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages.
-Open folder `src` and move every file to a specific directory.
+Download the entire repo as a .zip file, unzip it, and move the folder to a specific directory.
+Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages. You should have Python 3 with pip installed to run this program.
 
 #### 3. Add a `.env` file to the directory where you put the other files and add the following code to the file.
 * `google_id =` your Google account **(with @gmail.com)**
@@ -28,7 +27,7 @@ Go to Help > About Google Chrome.
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system.
 Add your downloaded chromedriver to the directory where you put the other files.
 
-#### 5. Put your Google Classroom links in `links.yaml`.
+#### 5. Put your Google Classroom links in `config.yaml`.
 Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth.
 You can add optional comments regarding the name of the classroom corresponding to the links.
 ```
@@ -38,18 +37,19 @@ You can add optional comments regarding the name of the classroom corresponding 
 '3': Google Classroom Link No. 3  # Classroom Name
 ```
 
-#### 6. Run `execute.py` to create a shell/batch script.
-Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh` / `run.bat`.
+#### 6. Run `generator.py` to create a shell/batch script.
+Use a Python IDE or Terminal/Command Prompt to run `generator.py`.
+Every time you change `config.yaml`, you need to re-run `generator.py` in order to renew `run.sh` / `run.bat`.
 
-#### 7. Run `run.sh` or `run.batch`.
+#### 7. Run `run.sh` or `run.bat`.
 For Mac/Linux, open Terminal/Command Line.
 Move to your directory by `cd "file path"` and type `source src/run.sh`.
 
-For Windows, open Command Prompt, move to the directory, and type `"your file path"\run.bat`.
+For Windows, open Command Prompt, move to the directory, and type `src/run.bat`.
 
 You may need to quit each Chrome window after you stop executing the code.
 The chromedriver windows *do not* get closed automatically.
 
 #### Note
-You can edit line No. 38 to be `driver = uc.Chrome()` instead of downloading chromedriver manually.
+You can edit line No. 45 to be `driver = uc.Chrome()` instead of downloading chromedriver manually.
 Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
