@@ -233,7 +233,7 @@ def Process():
         postnum_str = str(postnum_int)
         try:
             elementFinder(postnum_str, "main", "", "self")
-            driver.implicitly_wait(0.5)
+            driver.implicitly_wait(1)
         except:
             postmax = postnum_int - 1
             break
@@ -248,7 +248,7 @@ def Process():
         postnum_str = str(postnum_int)
         try:
             errorchk = elementFinder(postnum_str, "main", "", "jsaction")
-            driver.implicitly_wait(0.5)
+            driver.implicitly_wait(1)
         except:  # 게시물이 삭제되었을 때 postmax에서 예외가 발생하기 때문
             break
 
@@ -331,7 +331,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
 
 # 게시물 수정 시
-def MsgEdited():
+def MsgEdited(pdict_before, pdict_after):
     post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
     set_before = set(pdict_before.items())
     set_after = set(pdict_after.items())
@@ -359,7 +359,7 @@ def MsgEdited():
 
 
 # 게시물 삭제 시
-def MsgRemoved():
+def MsgRemoved(pdict_before, pdict_after):
     post_room = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
     set_before = set(pdict_before.values())
     set_after = set(pdict_after.values())
@@ -382,38 +382,40 @@ if __name__ == "__main__":
     login(driver)
 
     # 최초 딕셔너리
-    pdict_before = Process()
+    pdict_1 = Process()
 
     # 전후 비교
     while True:
         time.sleep(1)
         driver.refresh()
-        while True:
-            try:
-                pdict_after = Process()
-                break
-            except:
-                pass
+        pdict_2 = Process()
 
-        if pdict_before != pdict_after:
-            if len(pdict_before) > len(pdict_after):
-                print("pdict_before = ", pdict_before, "\n")
-                print("pdict_after = ", pdict_after, "\n")
-                print("삭제된 게시물 감지.")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
-                MsgRemoved()
-                print("메일 발신 완료.")
-
-            elif len(pdict_before) == len(pdict_after):
-                print("pdict_before = ", pdict_before, "\n")
-                print("pdict_after = ", pdict_after, "\n")
-                print("변경된 게시물 감지.")
-                MsgEdited()
-                print("메일 발신 완료.")
-
+        if pdict_1 != pdict_2:
+            pdict_3 = Process()  # 버그 예방을 위해 한 번 더 검증
+            if pdict_1 == pdict_3:
+                print("Bug detected.")
+                print("pdict_1 = ", pdict_1)
+                print("pdict_2 = ", pdict_2)
+            
             else:
-                print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요.")
+                if len(pdict_1) > len(pdict_3):
+                    print("pdict_1 = ", pdict_1)
+                    print("pdict_3 = ", pdict_3)
+                    print("삭제된 게시물 감지.")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                    MsgRemoved(pdict_1, pdict_3)
+                    print("메일 발신 완료.")
+
+                elif len(pdict_1) == len(pdict_3):
+                    print("pdict_1 = ", pdict_1)
+                    print("pdict_3 = ", pdict_3)
+                    print("변경된 게시물 감지.")
+                    MsgEdited(pdict_1, pdict_3)
+                    print("메일 발신 완료.")
+
+                else:
+                    print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요.")
+            pdict_1 = pdict_3
 
         else:
             print("변경사항 없음.")
-
-        pdict_before = pdict_after
+            pdict_1 = pdict_2
