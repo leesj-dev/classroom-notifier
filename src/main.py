@@ -49,6 +49,7 @@ def init_driver():
 
 # 클래스룸 접속
 def login(driver):
+    driver.implicitly_wait(10)
     driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(google_id)
     driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').click()
     driver.implicitly_wait(5)
@@ -222,6 +223,7 @@ def attachExtractor(postnum_str, type):
 
 # 프로세스 실행
 def Process():
+    driver.implicitly_wait(10)
     time.sleep(3)
     Scroll()
 
@@ -325,7 +327,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
     with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
         smtp.login(naver_id, naver_pw)
-        smtp.sendmail(naver_id, google_id, msg.as_string())
+        # smtp.sendmail(naver_id, google_id, msg.as_string())
 
 
 # 게시물 수정 시
@@ -395,11 +397,15 @@ if __name__ == "__main__":
 
         if pdict_before != pdict_after:
             if len(pdict_before) > len(pdict_after):
+                print("pdict_before = ", pdict_before, "\n")
+                print("pdict_after = ", pdict_after, "\n")
                 print("삭제된 게시물 감지.")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                 MsgRemoved()
                 print("메일 발신 완료.")
 
             elif len(pdict_before) == len(pdict_after):
+                print("pdict_before = ", pdict_before, "\n")
+                print("pdict_after = ", pdict_after, "\n")
                 print("변경된 게시물 감지.")
                 MsgEdited()
                 print("메일 발신 완료.")
