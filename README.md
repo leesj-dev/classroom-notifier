@@ -44,11 +44,12 @@ Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remem
 '3': Google Classroom Link No. 3  # Classroom Name
 ```
 
-#### 7. Run `execute.py` to create `run.sh`.
-Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh`.
+#### 7. Run `execute.py` to create a shell/batch script.
+Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh` / `run.bat`.
 
-#### 8. Run `run.sh`.
-Open Terminal and type `source "your file path"/run.sh`. For example, if your files are located in `/Users/user/classroom-notifier`, then you need to type `source /Users/user/classroom-notifier/run.sh`.
+#### 8. Run `run.sh` or `run.batch`.
+For Mac/Linux, open Terminal/Command Line and type `source "your file path"/run.sh`. For example, if your files are located in `/Users/user/classroom-notifier`, then you need to type `source /Users/user/classroom-notifier/run.sh`.
+For Windows, open Command Prompt and type `"your file path"\run.bat`.
 You may need to quit each Chrome window after you stop executing the code. The chromedriver windows *do not* get closed automatically.
 
 #### Note
