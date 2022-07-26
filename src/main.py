@@ -27,7 +27,7 @@ elif platform == "win32":
     slash = "\\"
 
 # 클래스룸 링크 (.ymal 파일에 보관)
-yaml_file = open(file_path + slash + "links.yaml")
+yaml_file = open(file_path + slash + "config.yaml")
 link_dict = yaml.safe_load(yaml_file)
 
 # 그래픽 자료형
