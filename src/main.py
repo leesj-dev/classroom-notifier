@@ -76,7 +76,7 @@ def Scroll():
 
 # xpath 경로 탐색
 def elementFinder(number, type, path, tofind):
-    if type == "main" or type == "공지":
+    if type in ("main", "공지"):
         total = ("(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path)
     elif type == "link_copy":
         total = "(//*[@class='z80M1 FeRvI'])[last()-1]" + path
@@ -296,7 +296,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
         message = message.replace("[[body]]", post_title)
         post_smalltext = ('<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split("\n", 1)[1] + "</td></tr>")
 
-    if post_type == "공지" or post_type == "질문":
+    if post_type in ("공지", "질문"):
         message = message.replace("[[postposition]]", "을")
     else:
         message = message.replace("[[postposition]]", "를")
@@ -325,7 +325,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
     with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
         smtp.login(naver_id, naver_pw)
-        # smtp.sendmail(naver_id, google_id, msg.as_string())
+        smtp.sendmail(naver_id, google_id, msg.as_string())
 
 
 # 게시물 수정 시
