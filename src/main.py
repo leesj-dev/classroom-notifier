@@ -26,13 +26,13 @@ if platform == "linux" or platform == "darwin":
 elif platform == "win32":
     slash = "\\"
 
-# 클래스룸 링크 (.ymal 파일에 보관)
-yaml_file = open(file_path + slash + "config.yaml")
+# 클래스룸 링크 (.yaml 파일에 보관)
+yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
 link_dict = yaml.safe_load(yaml_file)
 
 # 그래픽 자료형
 imgdict = {
-    "공지사항": "https://ci4.googleusercontent.com/proxy/lXfhTxxtlRo9jBByRra4CvV04HGPA1vh1Uy69rFI7Tx21qIUYebG3u-5hHb7GcAKaLP2LRTLQ3uAL_GJiwH5aO3KEXRIHCXxJfnH0V4RRRWEJmYoCnwnaoC3HuKMfKk7WOJ5Bjt3Eoi-WSfh6q4M7LGaZDG1BntyDfOOSopwlDhEf74sTAHhQhEdsK1bJHk=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/chat_bubble_outline/v7/white-48dp/2x/gm_chat_bubble_outline_white_48dp.png",
+    "공지": "https://ci4.googleusercontent.com/proxy/lXfhTxxtlRo9jBByRra4CvV04HGPA1vh1Uy69rFI7Tx21qIUYebG3u-5hHb7GcAKaLP2LRTLQ3uAL_GJiwH5aO3KEXRIHCXxJfnH0V4RRRWEJmYoCnwnaoC3HuKMfKk7WOJ5Bjt3Eoi-WSfh6q4M7LGaZDG1BntyDfOOSopwlDhEf74sTAHhQhEdsK1bJHk=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/chat_bubble_outline/v7/white-48dp/2x/gm_chat_bubble_outline_white_48dp.png",
     "자료": "https://ci6.googleusercontent.com/proxy/KwZhwEdkmty0qJcCZZEZ1AgLPNQoi0gB3r7FLNj1-_YhlgY7AHrEcTybc31P1i0i2IFaXgN9Y_KiAoxtJUJcrqyyZn2hTYPOTSjhHqVT8k6KcZAHLZfmmF7mBFg5fpfzy3EotPxANHQGLtYCFlGtRZY=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/book/v8/white-48dp/2x/gm_book_white_48dp.png",
     "질문": "https://ci5.googleusercontent.com/proxy/uwmGFdeqaPUtThLULRQZIBqFlWtXXssiY-rIToedc4g9VKdjLmtRa0sj4Q-XUZNoUmwogKF9UcXA8xkFlEge5yHAoKj4DVnop7J4wEFnCX8lHoY7Jlh_tB_BaUjRQYhocipZ1ClyZRChfqa9f0Wq1ffbAyVxEHlpQnZz=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/live_help/v6/white-48dp/2x/gm_live_help_white_48dp.png",
     "과제": "https://ci3.googleusercontent.com/proxy/8nr0SU4M3K6mq9EASltstSjUrUfTv13LXLM_xIJr6oD-GyeiECMFXG3ze_-oG9P-EOU9MGJRgMQ_HknJ8by3ZuiZlF4EevHowhFySEamH6uWEg1ct-LbbVxkojI3fo0lTDWSscyay8IHOuSnKbtN-UxnHx1_D9n3QY8IyFo=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/assignment/v6/white-48dp/2x/gm_assignment_white_48dp.png",
@@ -76,7 +76,7 @@ def Scroll():
 
 # xpath 경로 탐색
 def elementFinder(number, type, path, tofind):
-    if type == "main" or type == "공지사항":
+    if type == "main" or type == "공지":
         total = ("(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path)
     elif type == "link_copy":
         total = "(//*[@class='z80M1 FeRvI'])[last()-1]" + path
@@ -95,7 +95,7 @@ def elementFinder(number, type, path, tofind):
     return result
 
 
-# 게시물 종류 추출 (단, 공지사항은 제외)
+# 게시물 종류 추출 (단, 공지은 제외)
 def typeExtractor(postnum_str):
     title = elementFinder(postnum_str, "main", "/div[1]/div/div[3]/div/div/span", "text")
     type = title[title.find("게시") - 3 : title.find("게시") - 1]
@@ -104,7 +104,7 @@ def typeExtractor(postnum_str):
 
 # 게시자 추출
 def uploaderExtractor(postnum_str, type):
-    if type == "공지사항":
+    if type == "공지":
         uploader = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/div/div/span", "text")
     else:
         uploader = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[1]", "text")
@@ -116,7 +116,7 @@ def uploaderExtractor(postnum_str, type):
 def initialDateExtractor(postnum_str, type):
     end = "("
 
-    if type == "공지사항":
+    if type == "공지":
         mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
     else:
         mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
@@ -134,7 +134,7 @@ def finalDateExtractor(postnum_str, type):
     start = "("
     end = "에"
 
-    if type == "공지사항":
+    if type == "공지":
         mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
     else:
         mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
@@ -149,7 +149,7 @@ def finalDateExtractor(postnum_str, type):
 
 # 본문 추출
 def bodyExtractor(postnum_str, type, encoding):
-    if type == "공지사항":
+    if type == "공지":
         body = elementFinder(postnum_str, type, "/div[1]/div[2]/div[1]/html-blob/span", encoding)
 
     else:
@@ -165,7 +165,7 @@ def bodyExtractor(postnum_str, type, encoding):
 
 # 첨부파일 경로 검색
 def xpathFinder(type, divnum, j):
-    if type == "공지사항":
+    if type == "공지":
         xpath = "/div[1]/div[2]/div[2]/div[1]/div[" + divnum + "]/div[" + j + "]/a"
     else:
         xpath = "/div[2]/div[2]/div[1]/div/div[" + j + "]/div/a"
@@ -190,7 +190,7 @@ def attachExtractor(postnum_str, type):
             pass
 
     if flg is False:  # 첨부파일이 없거나 2개 이상인 경우
-        if type == "공지사항":
+        if type == "공지":
             for divnum in ["1", "2"]:
                 i = 1
                 while True:
@@ -251,7 +251,7 @@ def Process():
             break
 
         if errorchk is None:
-            post_type = "공지사항"
+            post_type = "공지"
             post_uploader = uploaderExtractor(postnum_str, post_type)
             post_date = finalDateExtractor(postnum_str, post_type)
             post_body_HTML = bodyExtractor(postnum_str, post_type, "innerHTML")
@@ -263,7 +263,7 @@ def Process():
         else:
             post_type = typeExtractor(postnum_str)
             elementFinder(postnum_str, "main", "", "click")
-            time.sleep(3)
+            time.sleep(2)
             post_uploader = uploaderExtractor(postnum_str, post_type)
             post_date = finalDateExtractor(postnum_str, post_type)
             post_body_HTML = bodyExtractor(postnum_str, post_type, "innerHTML")
@@ -288,7 +288,7 @@ def Process():
 def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlink, post_or_del_date, post_body_HTML, post_body_text):
     message = open(mail_path, "r", encoding="utf-8").read()
 
-    if post_type == "공지사항":
+    if post_type == "공지":
         message = message.replace("[[body]]", post_body_HTML)
         post_smalltext = '<tr height="0"></tr>'
     else:
@@ -296,7 +296,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
         message = message.replace("[[body]]", post_title)
         post_smalltext = ('<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split("\n", 1)[1] + "</td></tr>")
 
-    if post_type == "공지사항" or post_type == "질문":
+    if post_type == "공지" or post_type == "질문":
         message = message.replace("[[postposition]]", "을")
     else:
         message = message.replace("[[postposition]]", "를")
@@ -325,7 +325,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
     with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
         smtp.login(naver_id, naver_pw)
-        smtp.sendmail(naver_id, google_id, msg.as_string())
+        # smtp.sendmail(naver_id, google_id, msg.as_string())
 
 
 # 게시물 수정 시
@@ -343,7 +343,7 @@ def MsgEdited():
         post_body_text = val[4]
 
         # 주소 복사
-        if post_type == "공지사항":
+        if post_type == "공지":
             elementFinder(key_str, "main", "/div[1]/div[1]/div[4]/div/div/div", "click")
         else:
             elementFinder(key_str, "main", "/div[1]/div/div[6]/div/div/div", "click")
@@ -352,7 +352,7 @@ def MsgEdited():
         elementFinder(key_str, "link_copy", "", "click")
         post_postlink = pyclip.paste(text=True)
         pyclip.clear()
-        mail_path = file_path + slash + "mail_edited.html"
+        mail_path = file_path + slash + "src" + slash + "mail_edited.html"
         SendMsg("수정", mail_path, post_room, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
@@ -368,7 +368,7 @@ def MsgRemoved():
         post_body_HTML = val[3]
         post_body_text = val[4]
         del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
-        mail_path = file_path + slash + "mail_deleted.html"
+        mail_path = file_path + slash + "src" + slash + "mail_deleted.html"
         SendMsg("삭제", mail_path, post_room, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
 
 
@@ -384,7 +384,7 @@ if __name__ == "__main__":
 
     # 전후 비교
     while True:
-        time.sleep(10)
+        time.sleep(1)
         driver.refresh()
         while True:
             try:
