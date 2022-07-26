@@ -11,7 +11,7 @@ Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
 #### 2. Download the files and install the required packages.
 Download the entire repo as a .zip file and unzip it.
-Open terminal and type `pip install -r requirements.txt` to install the required packages.
+Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages.
 Open folder `src` and move every file to a specific directory.
 
 #### 3. Add a `.env` file to the directory where you put the other files and add the following code to the file.
@@ -42,10 +42,10 @@ You can add optional comments regarding the name of the classroom corresponding 
 Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh` / `run.bat`.
 
 #### 7. Run `run.sh` or `run.batch`.
-For Mac/Linux, open Terminal/Command Line and type `source "your file path"/run.sh`.
-For example, if your files are located in `/Users/user/classroom-notifier`, then you need to type `source /Users/user/classroom-notifier/run.sh`.
+For Mac/Linux, open Terminal/Command Line.
+Move to your directory by `cd "file path"` and type `source src/run.sh`.
 
-For Windows, open Command Prompt and type `"your file path"\run.bat`.
+For Windows, open Command Prompt, move to the directory, and type `"your file path"\run.bat`.
 
 You may need to quit each Chrome window after you stop executing the code.
 The chromedriver windows *do not* get closed automatically.
