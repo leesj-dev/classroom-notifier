@@ -45,3 +45,6 @@ elif platform == "win32":  # Windows
 
     with open (file_path + slash + "src" + slash + 'run.bat', 'w') as bat:
         bat.write(command)
+
+else:
+    print("This operating system is not supported.")
