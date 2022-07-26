@@ -327,7 +327,7 @@ def SendMsg(status, mail_path, post_room, post_type, post_uploader, post_postlin
 
     with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
         smtp.login(naver_id, naver_pw)
-        # smtp.sendmail(naver_id, google_id, msg.as_string())
+        smtp.sendmail(naver_id, google_id, msg.as_string())
 
 
 # 게시물 수정 시
@@ -386,12 +386,15 @@ if __name__ == "__main__":
 
     # 전후 비교
     while True:
-        time.sleep(1)
+        time.sleep(3)
         driver.refresh()
         pdict_2 = Process()
 
         if pdict_1 != pdict_2:
+            time.sleep(3)
+            driver.refresh()
             pdict_3 = Process()  # 버그 예방을 위해 한 번 더 검증
+
             if pdict_1 == pdict_3:
                 print("Bug detected.")
                 print("pdict_1 = ", pdict_1)
@@ -414,6 +417,7 @@ if __name__ == "__main__":
 
                 else:
                     print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요.")
+            
             pdict_1 = pdict_3
 
         else:
