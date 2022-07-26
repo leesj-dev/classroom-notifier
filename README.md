@@ -5,19 +5,6 @@ This is because Google only sends email notifications for *added* posts.
 ***DISCLAIMER: The Google account language <ins>MUST</ins> be set to Korean, otherwise it will not work.**
 
 ## How to Use
-#### 1. Install the following packages.
-```
-pip install python-dotenv
-pip install selenium
-pip install email
-pip install pytz
-pip install datetime
-pip install undetected_chromedriver
-pip install pyclip
-pip install smtplib
-pip install pyyaml
-```
-
 #### 1. Enable SMTP on your NAVER account.
 Login to [NAVER Mail](https://mail.naver.com) and go to `환경설정 > POP3/SMTP 설정`. 
 Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
