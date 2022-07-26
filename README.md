@@ -18,28 +18,30 @@ pip install smtplib
 pip install pyyaml
 ```
 
-#### 2. Enable SMTP on your NAVER account.
+#### 1. Enable SMTP on your NAVER account.
 Login to [NAVER Mail](https://mail.naver.com) and go to `환경설정 > POP3/SMTP 설정`. 
 Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
-#### 3. Download the required files.
-Download the entire repo as a .zip file. Open folder `src` and move every file to a specific directory.
+#### 2. Download the files and install the required packages.
+Download the entire repo as a .zip file and unzip it.
+Open terminal and type `pip install -r requirements.txt` to install the required packages.
+Open folder `src` and move every file to a specific directory.
 
-#### 4. Add a `.env` file to the directory where you put the other files and add the following code to the file.
+#### 3. Add a `.env` file to the directory where you put the other files and add the following code to the file.
 * `google_id =` your Google account **(with @gmail.com)**
 * `google_pw =` your Google account password
 * `naver_id =` your NAVER account **(with @naver.com)**
 * `naver_pw =` your NAVER account password
 * `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/`]**
 
-#### 5. Check your Google Chrome version and download chromedriver.
+#### 4. Check your Google Chrome version and download chromedriver.
 To check your Chrome version on your desktop, open Chrome and click the `⋮` button in the top right.
 Go to Help > About Google Chrome.
 
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system.
 Add your downloaded chromedriver to the directory where you put the other files.
 
-#### 6. Put your Google Classroom links in `links.yaml`.
+#### 5. Put your Google Classroom links in `links.yaml`.
 Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth.
 You can add optional comments regarding the name of the classroom corresponding to the links.
 ```
@@ -49,10 +51,10 @@ You can add optional comments regarding the name of the classroom corresponding 
 '3': Google Classroom Link No. 3  # Classroom Name
 ```
 
-#### 7. Run `execute.py` to create a shell/batch script.
+#### 6. Run `execute.py` to create a shell/batch script.
 Every time you change `links.json`, you need to re-run `execute.py` in order to renew `run.sh` / `run.bat`.
 
-#### 8. Run `run.sh` or `run.batch`.
+#### 7. Run `run.sh` or `run.batch`.
 For Mac/Linux, open Terminal/Command Line and type `source "your file path"/run.sh`.
 For example, if your files are located in `/Users/user/classroom-notifier`, then you need to type `source /Users/user/classroom-notifier/run.sh`.
 

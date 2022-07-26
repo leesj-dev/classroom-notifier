@@ -1,0 +1,7 @@
+DateTime==4.5
+pyclip==0.6.0
+python-dotenv==0.20.0
+pytz==2022.1
+PyYAML==6.0
+selenium==4.3.0
+undetected-chromedriver==3.1.5.post4
