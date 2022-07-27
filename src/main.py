@@ -319,29 +319,29 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
     message = open(mail_path, "r", encoding="utf-8").read()
 
     if post_type == "공지":
-        message = message.replace("[[body]]", post_body_HTML)
+        message = message.replace("${body}", post_body_HTML)
         post_smalltext = '<tr height="0"></tr>'
     else:
         post_title = post_body_HTML.split("\n", 1)[0]  # \n을 기준으로 최대 1번 쪼갠 뒤 그 중 첫번째(0번째) 부분
-        message = message.replace("[[body]]", post_title)
+        message = message.replace("${body}", post_title)
         post_smalltext = ('<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">' + post_body_HTML.split("\n", 1)[1] + "</td></tr>")
 
     if post_type == "질문":
-        message = message.replace("[[postposition]]", "을")
+        message = message.replace("${postposition}", "을")
     else:
-        message = message.replace("[[postposition]]", "를")
+        message = message.replace("${postposition}", "를")
 
-    message = message.replace("[[google_id]", google_id)
-    message = message.replace("[[roomlink]]", link)
-    message = message.replace("[[room]]", room_name)
-    message = message.replace("[[color1]]", room_color)
-    message = message.replace("[[color2]]", colordict[room_color])
-    message = message.replace("[[uploader]]", post_uploader)
-    message = message.replace("[[type]]", post_type)
-    message = message.replace("[[date]]", post_or_del_date)  # 수정된 게시물: post_date, 삭제된 게시물: del_date
-    message = message.replace("[[postlink]]", post_postlink)  # 수정된 게시물에만 존재
-    message = message.replace("[[imgsrc]]", imgdict[post_type])
-    message = message.replace("[[smalltext]]", post_smalltext)
+    message = message.replace("${google_id]", google_id)
+    message = message.replace("${roomlink}", link)
+    message = message.replace("${room}", room_name)
+    message = message.replace("${color1}", room_color)
+    message = message.replace("${color2}", colordict[room_color])
+    message = message.replace("${uploader}", post_uploader)
+    message = message.replace("${type}", post_type)
+    message = message.replace("${date}", post_or_del_date)  # 수정된 게시물: post_date, 삭제된 게시물: del_date
+    message = message.replace("${postlink}", post_postlink)  # 수정된 게시물에만 존재
+    message = message.replace("${imgsrc}", imgdict[post_type])
+    message = message.replace("${smalltext}", post_smalltext)
 
     # 메일 제목
     if len(post_body_text) < 20:

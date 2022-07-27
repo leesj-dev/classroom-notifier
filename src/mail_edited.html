@@ -20,12 +20,12 @@
                 <td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">안녕하세요?</td>
               </tr>
               <tr>
-                <td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">[[uploader]]님이 <a href="https://accounts.google.com/AccountChooser?continue=[[roomlink]]&amp;Email=[[google_id]]" style="color:[[color1]];font-weight:400;text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://accounts.google.com/AccountChooser?continue%3D[[roomlink]]%26Email%3D[[google_id]]&amp;source=gmail&amp;ust=1656164034517000&amp;usg=AOvVaw3dNcWXz1drIB1oL7b0Ft0h">[[room]]</a>에 [[type]][[postposition]] 수정했습니다.</td>
+                <td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">${uploader}님이 <a href="https://accounts.google.com/AccountChooser?continue=${roomlink}&amp;Email=${google_id}" style="color:${color1};font-weight:400;text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://accounts.google.com/AccountChooser?continue%3D${roomlink}%26Email%3D${google_id}&amp;source=gmail&amp;ust=1656164034517000&amp;usg=AOvVaw3dNcWXz1drIB1oL7b0Ft0h">${room}</a>에 ${type}${postposition} 수정했습니다.</td>
               </tr>
               <tr height="24px"></tr>
               <tr>
                 <td>
-                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-top-left-radius:8px;border-top-right-radius:8px;border:1px solid #e8eaed;border-bottom:0;background-color:[[color2]]" width="100%">
+                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-top-left-radius:8px;border-top-right-radius:8px;border:1px solid #e8eaed;border-bottom:0;background-color:${color2}" width="100%">
                     <tbody>
                       <tr>
                         <td colspan="2" height="4px"></td>
@@ -42,27 +42,27 @@
                       </tr>
                       <tr>
                         <td style="padding-right:16px" valign="top" width="20px">
-                          <div style="border-radius:50%;background-color:[[color2]];height:24px;width:24px;padding:8px">
-                            <img height="24px" src=[[imgsrc]] width="24px" role="presentation" class="CToWUd"></div>
+                          <div style="border-radius:50%;background-color:${color2};height:24px;width:24px;padding:8px">
+                            <img height="24px" src=${imgsrc} width="24px" role="presentation" class="CToWUd"></div>
                         </td>
                         <td>
                           <table cellpadding="0" cellspacing="0" role="presentation" style="width:100%">
                             <tbody>
                               <tr>
-                                <td style="font-size:11px;font-weight:500;letter-spacing:0.8px;float:left;text-transform:uppercase;line-height:16px;color:#5f6368">수정된 [[type]]</td>
+                                <td style="font-size:11px;font-weight:500;letter-spacing:0.8px;float:left;text-transform:uppercase;line-height:16px;color:#5f6368">수정된 ${type}</td>
                                 <td style="font-family:Google Sans,Roboto,Helvetica,Arial,sans-serif;font-size:14px;letter-spacing:0.25px;color:#3c4043;float:right">
                                 </td>
                               </tr>
                               <tr height="4px"></tr>
                               <tr>
-                                <td style="font-family:Google Sans,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px">[[body]]</td>
-                              </tr>[[smalltext]]<tr height="16px"></tr>
+                                <td style="font-family:Google Sans,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px">${body}</td>
+                              </tr>${smalltext}<tr height="16px"></tr>
                               <tr>
                                 <td>
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;display:inline-block">
                                     <tbody>
                                       <tr>
-                                        <td><a href="https://accounts.google.com/AccountChooser?continue=[[postlink]]&amp;Email=[[google_id]]" style="border:1px solid #dadce0;font-family:Google Sans,Roboto,Helvetica,Arial,sans-serif;color:[[color1]];border-radius:4px;box-sizing:border-box;display:inline-block;font-size:14px;height:32px;line-height:30px;padding:0 24px;text-decoration:none;letter-spacing:0.25px;font-weight:500" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://accounts.google.com/AccountChooser?continue%3D[[postlink]]%26Email%3D[[google_id]]]&amp;source=gmail&amp;ust=1656164034517000&amp;usg=AOvVaw0lNXrPLSz8_0oaRyXRABg2">열기</a>
+                                        <td><a href="https://accounts.google.com/AccountChooser?continue=${postlink}&amp;Email=${google_id}" style="border:1px solid #dadce0;font-family:Google Sans,Roboto,Helvetica,Arial,sans-serif;color:${color1};border-radius:4px;box-sizing:border-box;display:inline-block;font-size:14px;height:32px;line-height:30px;padding:0 24px;text-decoration:none;letter-spacing:0.25px;font-weight:500" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://accounts.google.com/AccountChooser?continue%3D${postlink}%26Email%3D${google_id}]&amp;source=gmail&amp;ust=1656164034517000&amp;usg=AOvVaw0lNXrPLSz8_0oaRyXRABg2">열기</a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -71,7 +71,7 @@
                               </tr>
                               <tr height="8px"></tr>
                               <tr>
-                                <td style="font-size:12px;color:#5f6368;letter-spacing:0.3px">[[date]]에 [[uploader]]님이 수정함</td>
+                                <td style="font-size:12px;color:#5f6368;letter-spacing:0.3px">${date}에 ${uploader}님이 수정함</td>
                               </tr>
                             </tbody>
                           </table>
