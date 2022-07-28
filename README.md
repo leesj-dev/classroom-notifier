@@ -45,7 +45,7 @@ You can add optional comments regarding the name of the classroom corresponding 
 ```
 ---
  '1':
-   link: Google Classroom Link No. 1  # Classroom Name
+   link: https://classroom.google.com/c/123456789  # Mathematics
    login: 12345@gmail.com
    sendfrom: 23456@naver.com
    sendto:
@@ -53,7 +53,7 @@ You can add optional comments regarding the name of the classroom corresponding 
      - efgh@gmail.com
      - ijkl@gmail.com
  '2': 
-   link: Google Classroom Link No. 2  # Classroom Name
+   link: https://classroom.google.com/c/abcdefgh  # Physics
    login: 12345@gmail.com
    sendfrom: 23456@naver.com
    sendto:
