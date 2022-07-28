@@ -14,14 +14,14 @@ Download the entire repo as a .zip file, unzip it, and move the folder to a spec
 Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages. You should have Python 3 with pip installed to run this program.
 
 #### 3. Add a `.env` file to the directory where you put the other files.
-On the `.env` file, add *every* email address and password you are going to use.
+On the `.env` file, add **every** email address and password you are going to use for logging in to your Google Classroom **and** for sending emails.
 Please include the domain, such as `@gmail.com`, and remember to include both Google and NAVER emails.
 You also have to add the line `file_path` and put the directory where the file is located.
 * `"your email address 1" = "your password"`
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
 * `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/` or `\`]**
-* `headless =` type `yes` to use Headless mode, or `no` to not use it.
+* `headless =` `yes` to use Headless mode; `no` to not use it.
 
 For example, the result of the `.env` file would be:
 ```
