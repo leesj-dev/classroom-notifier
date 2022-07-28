@@ -19,12 +19,12 @@ if platform in ("linux", "darwin"):
 elif platform == "win32":
     slash = "\\"
 
-# ID/PW (.env 파일에 따로 보관)
+# .env 파일에서 파일 경로와 헤드리스 사용 여부를 불러옴
 load_dotenv()
 file_path = os.getenv("file_path")
 headless = os.getenv("headless")
 
-# 클래스룸 링크 (.yaml 파일에 보관)
+# .yaml 파일에서 정보 불러옴
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
 link_dict = yaml.safe_load(yaml_file)
 number = sys.argv[1]
@@ -34,7 +34,7 @@ login_id = used_dict["login"]
 login_pw = os.getenv(login_id)
 sendfrom_id = used_dict["sendfrom"]
 sendfrom_pw = os.getenv(sendfrom_id)
-sendto = used_dict["sendto"]  # 자료형 list임
+sendto = used_dict["sendto"]  # 자료형 list이므로 주의 필요
 
 # 그래픽 자료형
 imgdict = {
@@ -44,7 +44,7 @@ imgdict = {
     "과제": "https://ci3.googleusercontent.com/proxy/8nr0SU4M3K6mq9EASltstSjUrUfTv13LXLM_xIJr6oD-GyeiECMFXG3ze_-oG9P-EOU9MGJRgMQ_HknJ8by3ZuiZlF4EevHowhFySEamH6uWEg1ct-LbbVxkojI3fo0lTDWSscyay8IHOuSnKbtN-UxnHx1_D9n3QY8IyFo=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/assignment/v6/white-48dp/2x/gm_assignment_white_48dp.png",
 }
 
-# 색상 자료형 (클래스룸에서는 key만 구할 수 있음)
+# 색상 자료형 (클래스룸에서는 key 색상만 구할 수 있으므로 value 색상을 따로 구해야 함)
 colordict = {
   # room & 열기 # 선 & 원
     "#174ea6": "#1967d2",  # Dark Blue
@@ -57,8 +57,7 @@ colordict = {
     "#202124": "#5f6368",  # Grey 
 }
 
-# 구글 로그인 차단 우회
-# 헤드리스 모드 사용 설정
+# 구글 로그인 차단 우회 - undetected_chromedriver
 def init_driver():
     chromedriver_path = file_path + slash + "chromedriver"
 
@@ -439,7 +438,7 @@ if __name__ == "__main__":
         if pdict_1 != pdict_2:
             time.sleep(3)
             driver.refresh()
-            pdict_3 = Process()  # 버그 예방을 위해 한 번 더 검증
+            pdict_3 = Process()  # 모두 로딩될 때까지 기다려도 간혹 페이지 로딩이 끝까지 되지 않은 채로 크롤링될 때가 있음. 버그 예방을 위해 한 번 더 검증
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
 
             if pdict_1 == pdict_3:
