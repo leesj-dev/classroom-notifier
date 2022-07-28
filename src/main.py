@@ -13,7 +13,6 @@ import time
 import sys
 import os
 
-
 # 운영체제 확인
 if platform in ("linux", "darwin"):
     slash = "/"
@@ -73,7 +72,7 @@ def init_driver():
         driver = uc.Chrome(driver_executable_path=chromedriver_path)
 
     driver.get(link)
-    
+
     return driver
 
 
