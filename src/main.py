@@ -21,8 +21,10 @@ elif platform == "win32":
 
 # .env 파일에서 파일 경로와 헤드리스 사용 여부를 불러옴
 load_dotenv()
-file_path = os.getenv("file_path")
 headless = os.getenv("headless")
+file_path = os.getenv("file_path")
+if file_path[-1] in ("/", "\\"):
+    file_path = file_path[:-1]
 
 # .yaml 파일에서 정보 불러옴
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
