@@ -67,10 +67,10 @@ def init_driver():
 def login(driver, login_id, login_pw):
     driver.implicitly_wait(10)
     driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(login_id)
-    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').send_keys(Keys=Return)
+    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').send_keys(Keys.Return)
     driver.implicitly_wait(5)
     driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(login_pw)
-    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys=Return)
+    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys.Return)
     driver.implicitly_wait(10)
     time.sleep(3)
 
@@ -121,7 +121,7 @@ def elementFinder(number, type, path, tofind):
     elif tofind == "text":
         result = driver.find_element(By.XPATH, total).text
     elif tofind == "click":
-        result = driver.find_element(By.XPATH, total).send_keys(Keys=Return)
+        result = driver.find_element(By.XPATH, total).send_keys(Keys.Return)
     else:
         result = driver.find_element(By.XPATH, total).get_attribute(tofind)
 
@@ -335,7 +335,7 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
     else:
         message = message.replace("${postposition}", "를")
 
-    message = message.replace("${google_id]", google_id)
+    message = message.replace("${google_id]", login_id)
     message = message.replace("${roomlink}", link)
     message = message.replace("${room}", room_name)
     message = message.replace("${color1}", room_color)
