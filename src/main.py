@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from email.mime.text import MIMEText
 from pytz import timezone
 from datetime import datetime
@@ -12,14 +13,6 @@ import time
 import sys
 import os
 
-# ID/PW (.env 파일에 따로 보관)
-load_dotenv()
-google_id = os.getenv("google_id")
-google_pw = os.getenv("google_pw")
-naver_id = os.getenv("naver_id")
-naver_pw = os.getenv("naver_pw")
-file_path = os.getenv("file_path")
-
 # 운영체제 확인
 if platform in ("linux", "darwin"):
     slash = "/"
@@ -29,6 +22,17 @@ elif platform == "win32":
 # 클래스룸 링크 (.yaml 파일에 보관)
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
 link_dict = yaml.safe_load(yaml_file)
+
+# ID/PW (.env 파일에 따로 보관)
+load_dotenv()
+file_path = os.getenv("file_path")
+number = sys.argv[1]
+link = link_dict[number][link]
+login_id = link_dict[number][login]
+login_pw = os.getenv(login_id)
+sendfrom_id = link_dict[number][sendfrom]
+sendfrom_pw = os.getenv(sendfrom_id)
+sendto = link_dict[number][sendto]  # 자료형 list임
 
 # 그래픽 자료형
 imgdict = {
@@ -60,13 +64,13 @@ def init_driver():
 
 
 # 클래스룸 접속
-def login(driver):
+def login(driver, login_id, login_pw):
     driver.implicitly_wait(10)
-    driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(google_id)
-    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').click()
+    driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(login_id)
+    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').send_keys(Keys=Return)
     driver.implicitly_wait(5)
-    driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(google_pw)
-    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').click()
+    driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(login_pw)
+    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys=Return)
     driver.implicitly_wait(10)
     time.sleep(3)
 
@@ -117,7 +121,7 @@ def elementFinder(number, type, path, tofind):
     elif tofind == "text":
         result = driver.find_element(By.XPATH, total).text
     elif tofind == "click":
-        result = driver.find_element(By.XPATH, total).click()
+        result = driver.find_element(By.XPATH, total).send_keys(Keys=Return)
     else:
         result = driver.find_element(By.XPATH, total).get_attribute(tofind)
 
@@ -349,15 +353,16 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
     else:
         title = status + "된 " + post_type + ": '" + post_body_text[0:20] + "...'"
 
-    # 메일 전송
-    msg = MIMEText(message, "html")
-    msg["Subject"] = title
-    msg["From"] = naver_id
-    msg["To"] = google_id
+    for address in sendto:
+        # 메일 전송
+        msg = MIMEText(message, "html")
+        msg["Subject"] = title
+        msg["From"] = sendfrom_id
+        msg["To"] = address
 
-    with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
-        smtp.login(naver_id, naver_pw)
-        smtp.sendmail(naver_id, google_id, msg.as_string())
+        with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
+            smtp.login(sendfrom_id, sendfrom_pw)
+            smtp.sendmail(sendfrom_id, sendfrom_id, msg.as_string())
 
 
 # 게시물 수정 시
@@ -406,10 +411,8 @@ def MsgRemoved(pdict_before, pdict_after, room_name):
 
 # main 함수
 if __name__ == "__main__":
-    number = sys.argv[1]
-    link = link_dict[number]
     driver = init_driver()
-    login(driver)
+    login(driver, login_id, login_pw)
 
     # 최초 딕셔너리
     pdict_1 = Process()
