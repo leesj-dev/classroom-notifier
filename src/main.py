@@ -444,25 +444,25 @@ if __name__ == "__main__":
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
 
             if pdict_1 == pdict_3:
-                print("'" + room_name + "'에서 버그 발견. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                print("버그 발견: '" + room_name + "'. [" + datetime.now().strftime("%H:%M:%S") + "]")
             
             else:
                 if len(pdict_1) > len(pdict_3):
-                    print("'" + room_name + "'에서 삭제된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                    print("삭제된 게시물 감지: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                     MsgRemoved(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 elif len(pdict_1) == len(pdict_3):
-                    print("'" + room_name + "'에서 변경된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                    print("변경된 게시물 감지: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
                     MsgEdited(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 else:
-                    print("'" + room_name + "'에서 새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                    print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
             
             pdict_1 = pdict_3
 
         else:
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
-            print("'" + room_name + "'에서 변경사항 없음. [" + datetime.now().strftime("%H:%M:%S") + "]")
+            print("변경사항 없음: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
             pdict_1 = pdict_2
