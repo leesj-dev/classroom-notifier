@@ -38,12 +38,12 @@ You can add optional comments regarding the name of the classroom corresponding 
 ```
 
 #### 6. Run `generator.py` to create a shell/batch script.
-Use a Python IDE or Terminal/Command Prompt to run `generator.py`.
+Use a Python IDE or Terminal/Command Prompt to run `generator.py`. If you are using Terminal, move to your directory by `cd "file path"` and type `python3 src/generator.py`.
 Every time you change `config.yaml`, you need to re-run `generator.py` in order to renew `run.sh` / `run.bat`.
 
 #### 7. Run `run.sh` or `run.bat`.
 For Mac/Linux, open Terminal/Command Line.
-Move to your directory by `cd "file path"` and type `source src/run.sh`.
+Move to your directory and type `source src/run.sh`.
 
 For Windows, open Command Prompt, move to the directory, and type `src/run.bat`.
 
