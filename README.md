@@ -13,11 +13,10 @@ Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 Download the entire repo as a .zip file, unzip it, and move the folder to a specific directory.
 Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages. You should have Python 3 with pip installed to run this program.
 
-#### 3. Add a `.env` file to the directory where you put the other files and add the following code to the file.
-* `google_id =` your Google account **(with @gmail.com)**
-* `google_pw =` your Google account password
-* `naver_id =` your NAVER account **(with @naver.com)**
-* `naver_pw =` your NAVER account password
+#### 3. Add a `.env` file to the directory where you put the other files and add *every* email address and password you are going to use. Please include the domain, such as `@gmail.com`, and remember to include both Google and NAVER emails. You also have to add the line `file_path` and put the directory where the file is located.
+* `"your email address 1" = "your password"`
+* `"your email address 2" = "your password"`
+* `"your email address 3" = "your password"`
 * `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/`]**
 
 #### 4. Check your Google Chrome version and download chromedriver.
@@ -28,13 +27,26 @@ Go to Help > About Google Chrome.
 Add your downloaded chromedriver to the directory where you put the other files.
 
 #### 5. Put your Google Classroom links in `config.yaml`.
-Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth.
+Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. The `login` *must* be a Google account, and `sendfrom` a NAVER account.
 You can add optional comments regarding the name of the classroom corresponding to the links.
 ```
 ---
-'1': Google Classroom Link No. 1  # Classroom Name
-'2': Google Classroom Link No. 2  # Classroom Name
-'3': Google Classroom Link No. 3  # Classroom Name
+ '1':
+   link: Google Classroom Link No. 1  # Classroom Name
+   login: 12345@gmail.com
+   sendfrom: 23456@naver.com
+   sendto:
+     - abcd@gmail.com
+     - efgh@gmail.com
+     - ijkl@gmail.com
+ '2': 
+   link: Google Classroom Link No. 2  # Classroom Name
+   login: 12345@gmail.com
+   sendfrom: 23456@naver.com
+   sendto:
+     - abcd@gmail.com
+     - efgh@gmail.com
+     - ijkl@gmail.com
 ```
 
 #### 6. Run `generator.py` to create a shell/batch script.
