@@ -20,7 +20,7 @@ You also have to add the line `file_path` and put the directory where the file i
 * `"your email address 1" = "your password"`
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
-* `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/` or `\`]**
+* `file_path =` the directory of your file where your `.env` file is
 * `headless =` `yes` to use Headless mode; `no` to not use it.
 
 For example, the result of the `.env` file would be:

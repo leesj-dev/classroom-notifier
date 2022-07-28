@@ -5,7 +5,8 @@ from sys import platform
 
 load_dotenv()
 file_path = os.getenv("file_path")
-command = ""
+if file_path[-1] in ("/", "\\"):
+    file_path = file_path[:-1]
 
 def getMax(file_path, slash):
     yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
