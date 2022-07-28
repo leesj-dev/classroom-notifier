@@ -49,8 +49,6 @@ Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. Put the 
    sendfrom: 23456@naver.com
    sendto:
      - abcd@gmail.com
-     - efgh@gmail.com
-     - ijkl@gmail.com
  '2': 
    link: https://classroom.google.com/c/abcdefgh  # Physics
    login: 12345@gmail.com
