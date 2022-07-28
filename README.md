@@ -18,6 +18,16 @@ Open terminal, move to your directory by `cd "file path"` and type `pip install 
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
 * `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/` or `\`]**
+* `headless =` type `yes` to use Headless mode, or `no` to not use it.
+
+For example, the result of the `.env` file would be:
+```
+123@gmail.com = qwerty
+456@gmail.com = asdfg
+789@naver.com = qwretyuiop
+file_path = Documents/VS\ Code/classroom-notifier
+headless = yes
+```
 
 #### 4. Check your Google Chrome version and download chromedriver.
 To check your Chrome version on your desktop, open Chrome and click the `⋮` button in the top right.
