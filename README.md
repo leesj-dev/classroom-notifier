@@ -39,9 +39,8 @@ Go to Help > About Google Chrome.
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system.
 Add your downloaded chromedriver to the directory where you put the other files.
 
-### 5. Put your Google Classroom links in `config.yaml`.
-Replace "Google Classroom Link No. X" to the actual Google Classroom link. Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. The `login` *must* be a Google account, and `sendfrom` a NAVER account.
-You can add optional comments regarding the name of the classroom corresponding to the links.
+### 5. Add your configurations to `config.yaml`.
+Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. Put the Google Classroom links in `link`, and the Google account that you are going to crawl with in `login`. Put your NAVER account at `sendfrom`, and the recipients of your notification emails at `sendto`, as a list. You can add optional comments regarding the name of the classroom corresponding to the links.
 ```
 ---
  '1':
