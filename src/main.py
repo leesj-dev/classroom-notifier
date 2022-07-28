@@ -66,7 +66,7 @@ def init_driver():
         options = uc.ChromeOptions()
         options.headless = True
         options.add_argument('--headless')
-        driver = uc.Chrome(driver_executable_path=chromedriver_path, options = options)
+        driver = uc.Chrome(driver_executable_path=chromedriver_path, options=options)
     
     elif headless == "no":
         driver = uc.Chrome(driver_executable_path=chromedriver_path)
