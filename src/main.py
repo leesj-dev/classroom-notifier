@@ -16,8 +16,10 @@ import os
 # 운영체제 확인
 if platform in ("linux", "darwin"):
     slash = "/"
+    chromedriver_file = "chromedriver"
 elif platform == "win32":
     slash = "\\"
+    chromedriver_file = "chromedriver.exe"
 
 # .env 파일에서 파일 경로와 헤드리스 사용 여부를 불러옴
 load_dotenv()
@@ -61,7 +63,7 @@ colordict = {
 
 # 구글 로그인 차단 우회 - undetected_chromedriver
 def init_driver():
-    chromedriver_path = file_path + slash + "chromedriver"
+    chromedriver_path = file_path + slash + chromedriver_file
 
     if headless == "yes":
         options = uc.ChromeOptions()

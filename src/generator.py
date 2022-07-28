@@ -2,6 +2,7 @@ import os
 import yaml
 from dotenv import load_dotenv
 from sys import platform
+from sys import exec_prefix
 
 load_dotenv()
 file_path = os.getenv("file_path")
@@ -37,10 +38,12 @@ elif platform == "win32":  # Windows
     slash = "\\"
     max = getMax(file_path, slash)
     file_path_str = str(file_path)
+    file_path_str = file_path_str.replace("\\", "/")
+    location = exec_prefix + "\python.exe"
     command = ""
 
     for i in range(1, max + 1):
-        command = command + 'start python3 "' + file_path_str + '\src\main.py ' + str(i) + '"'
+        command = command + location + ' "' + file_path_str + '/src/main.py" ' + str(i)
         if i != max:
             command = command + "\n"
 
