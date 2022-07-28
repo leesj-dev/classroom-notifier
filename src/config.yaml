@@ -1,41 +1,41 @@
 ---
-'1':
-  link: Google Classroom Link No. 1  # Classroom Name
-  login: 12345@gmail.com
-  sendfrom: 23456@naver.com
-  sendto:
-    - abcd@gmail.com
-    - efgh@gmail.com
-    - ijkl@gmail.com
+'1': 
+    link: Google Classroom Link No. 1  # Classroom Name
+    login: 12345@gmail.com
+    sendfrom: 23456@naver.com
+    sendto:
+      - abcd@gmail.com
+      - efgh@gmail.com
+      - ijkl@gmail.com
 '2': 
-  link: Google Classroom Link No. 2  # Classroom Name
-  login: 12345@gmail.com
-  sendfrom: 23456@naver.com
-  sendto:
-    - abcd@gmail.com
-    - efgh@gmail.com
-    - ijkl@gmail.com
-'3':
-  link: Google Classroom Link No. 3  # Classroom Name
-  login: 12345@gmail.com
-  sendfrom: 23456@naver.com
-  sendto:
-    - abcd@gmail.com
-    - efgh@gmail.com
-    - ijkl@gmail.com
+    link: Google Classroom Link No. 2  # Classroom Name
+    login: 12345@gmail.com
+    sendfrom: 23456@naver.com
+    sendto:
+      - abcd@gmail.com
+      - efgh@gmail.com
+      - ijkl@gmail.com
+'3': 
+    link: Google Classroom Link No. 3  # Classroom Name
+    login: 12345@gmail.com
+    sendfrom: 23456@naver.com
+    sendto:
+      - abcd@gmail.com
+      - efgh@gmail.com
+      - ijkl@gmail.com
 '4': 
-  link: Google Classroom Link No. 4  # Classroom Name
-  login: 12345@gmail.com
-  sendfrom: 23456@naver.com
-  sendto:
-    - abcd@gmail.com
-    - efgh@gmail.com
-    - ijkl@gmail.com
-'5':
-  link: Google Classroom Link No. 5  # Classroom Name
-  login: 12345@gmail.com
-  sendfrom: 23456@naver.com
-  sendto:
-    - abcd@gmail.com
-    - efgh@gmail.com
-    - ijkl@gmail.com
+    link: Google Classroom Link No. 4  # Classroom Name
+    login: 12345@gmail.com
+    sendfrom: 23456@naver.com
+    sendto:
+      - abcd@gmail.com
+      - efgh@gmail.com
+      - ijkl@gmail.com
+'5': 
+    link: Google Classroom Link No. 5  # Classroom Name
+    login: 12345@gmail.com
+    sendfrom: 23456@naver.com
+    sendto:
+      - abcd@gmail.com
+      - efgh@gmail.com
+      - ijkl@gmail.com

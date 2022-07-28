@@ -19,20 +19,21 @@ if platform in ("linux", "darwin"):
 elif platform == "win32":
     slash = "\\"
 
-# 클래스룸 링크 (.yaml 파일에 보관)
-yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
-link_dict = yaml.safe_load(yaml_file)
-
 # ID/PW (.env 파일에 따로 보관)
 load_dotenv()
 file_path = os.getenv("file_path")
 number = sys.argv[1]
-link = link_dict[number][link]
-login_id = link_dict[number][login]
+
+# 클래스룸 링크 (.yaml 파일에 보관)
+yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
+link_dict = yaml.safe_load(yaml_file)
+used_dict = link_dict[number]
+link = used_dict["link"]
+login_id = used_dict["login"]
 login_pw = os.getenv(login_id)
-sendfrom_id = link_dict[number][sendfrom]
+sendfrom_id = used_dict["sendfrom"]
 sendfrom_pw = os.getenv(sendfrom_id)
-sendto = link_dict[number][sendto]  # 자료형 list임
+sendto = used_dict["sendto"]  # 자료형 list임
 
 # 그래픽 자료형
 imgdict = {
@@ -67,10 +68,10 @@ def init_driver():
 def login(driver, login_id, login_pw):
     driver.implicitly_wait(10)
     driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys(login_id)
-    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').send_keys(Keys.Return)
+    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button').send_keys(Keys.RETURN)
     driver.implicitly_wait(5)
     driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(login_pw)
-    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys.Return)
+    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys.RETURN)
     driver.implicitly_wait(10)
     time.sleep(3)
 
@@ -121,7 +122,7 @@ def elementFinder(number, type, path, tofind):
     elif tofind == "text":
         result = driver.find_element(By.XPATH, total).text
     elif tofind == "click":
-        result = driver.find_element(By.XPATH, total).send_keys(Keys.Return)
+        result = driver.find_element(By.XPATH, total).send_keys(Keys.RETURN)
     else:
         result = driver.find_element(By.XPATH, total).get_attribute(tofind)
 
