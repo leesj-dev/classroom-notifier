@@ -349,7 +349,7 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
     else:
         message = message.replace("${postposition}", "를")
 
-    message = message.replace("${google_id]", login_id)
+    message = message.replace("${google_id}", login_id)
     message = message.replace("${roomlink}", link)
     message = message.replace("${room}", room_name)
     message = message.replace("${color1}", room_color)
