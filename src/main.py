@@ -13,6 +13,7 @@ import time
 import sys
 import os
 
+
 # 운영체제 확인
 if platform in ("linux", "darwin"):
     slash = "/"
@@ -22,11 +23,12 @@ elif platform == "win32":
 # ID/PW (.env 파일에 따로 보관)
 load_dotenv()
 file_path = os.getenv("file_path")
-number = sys.argv[1]
+headless = os.getenv("headless")
 
 # 클래스룸 링크 (.yaml 파일에 보관)
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
 link_dict = yaml.safe_load(yaml_file)
+number = sys.argv[1]
 used_dict = link_dict[number]
 link = used_dict["link"]
 login_id = used_dict["login"]
@@ -57,10 +59,21 @@ colordict = {
 }
 
 # 구글 로그인 차단 우회
+# 헤드리스 모드 사용 설정
 def init_driver():
     chromedriver_path = file_path + slash + "chromedriver"
-    driver = uc.Chrome(driver_executable_path=chromedriver_path)
+
+    if headless == "yes":
+        options = uc.ChromeOptions()
+        options.headless = True
+        options.add_argument('--headless')
+        driver = uc.Chrome(driver_executable_path=chromedriver_path, options = options)
+    
+    elif headless == "no":
+        driver = uc.Chrome(driver_executable_path=chromedriver_path)
+
     driver.get(link)
+    
     return driver
 
 
@@ -122,7 +135,7 @@ def elementFinder(number, type, path, tofind):
     elif tofind == "text":
         result = driver.find_element(By.XPATH, total).text
     elif tofind == "click":
-        result = driver.find_element(By.XPATH, total).send_keys(Keys.RETURN)
+        result = driver.execute_script("arguments[0].click()", driver.find_element(By.XPATH, total)) # visible한 영역이 아닐 때 클릭하도록 강제실행
     else:
         result = driver.find_element(By.XPATH, total).get_attribute(tofind)
 
@@ -423,7 +436,7 @@ if __name__ == "__main__":
         time.sleep(3)
         driver.refresh()
         pdict_2 = Process()
-        
+
         if pdict_1 != pdict_2:
             time.sleep(3)
             driver.refresh()
@@ -431,25 +444,25 @@ if __name__ == "__main__":
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
 
             if pdict_1 == pdict_3:
-                print(room_name + "에서 버그 발견. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                print("'" + room_name + "'에서 버그 발견. [" + datetime.now().strftime("%H:%M:%S") + "]")
             
             else:
                 if len(pdict_1) > len(pdict_3):
-                    print(room_name + "에서 삭제된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                    print("'" + room_name + "'에서 삭제된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                     MsgRemoved(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 elif len(pdict_1) == len(pdict_3):
-                    print(room_name + "에서 변경된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                    print("'" + room_name + "'에서 변경된 게시물 감지. [" + datetime.now().strftime("%H:%M:%S") + "]")
                     MsgEdited(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 else:
-                    print(room_name + "에서 새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요. [" + datetime.now().strftime("%H:%M:%S") + "]")
+                    print("'" + room_name + "'에서 새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요. [" + datetime.now().strftime("%H:%M:%S") + "]")
             
             pdict_1 = pdict_3
 
         else:
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
-            print(room_name + "에서 변경사항 없음. [" + datetime.now().strftime("%H:%M:%S") + "]")
+            print("'" + room_name + "'에서 변경사항 없음. [" + datetime.now().strftime("%H:%M:%S") + "]")
             pdict_1 = pdict_2
