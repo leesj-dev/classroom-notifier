@@ -13,7 +13,10 @@ Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 Download the entire repo as a .zip file, unzip it, and move the folder to a specific directory.
 Open terminal, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages. You should have Python 3 with pip installed to run this program.
 
-#### 3. Add a `.env` file to the directory where you put the other files and add *every* email address and password you are going to use. Please include the domain, such as `@gmail.com`, and remember to include both Google and NAVER emails. You also have to add the line `file_path` and put the directory where the file is located.
+#### 3. Add a `.env` file to the directory where you put the other files.
+On the `.env` file, add *every* email address and password you are going to use.
+Please include the domain, such as `@gmail.com`, and remember to include both Google and NAVER emails.
+You also have to add the line `file_path` and put the directory where the file is located.
 * `"your email address 1" = "your password"`
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
