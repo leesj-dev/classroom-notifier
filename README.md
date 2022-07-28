@@ -52,4 +52,4 @@ The chromedriver windows *do not* get closed automatically.
 
 #### Note
 You can edit line No. 45 to be `driver = uc.Chrome()` instead of downloading chromedriver manually.
-Note that this would lead to downloading chromedriver every time you execute the Python code; therefore this method is *not recommended*.
+Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is *not recommended*.
