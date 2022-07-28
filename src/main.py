@@ -376,7 +376,7 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
 
         with smtplib.SMTP_SSL("smtp.naver.com", 465) as smtp:
             smtp.login(sendfrom_id, sendfrom_pw)
-            smtp.sendmail(sendfrom_id, sendfrom_id, msg.as_string())
+            smtp.sendmail(sendfrom_id, address, msg.as_string())
 
 
 # 게시물 수정 시
