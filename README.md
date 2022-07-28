@@ -17,7 +17,7 @@ Open terminal, move to your directory by `cd "file path"` and type `pip install 
 * `"your email address 1" = "your password"`
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
-* `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/`]**
+* `file_path =` the directory of your file where your `.env` file is **[DO NOT end the directory with `/` or `\`]**
 
 #### 4. Check your Google Chrome version and download chromedriver.
 To check your Chrome version on your desktop, open Chrome and click the `⋮` button in the top right.
