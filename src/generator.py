@@ -43,7 +43,7 @@ elif platform == "win32":  # Windows
     command = ""
 
     for i in range(1, max + 1):
-        command = command + "start /B " + location + ' "' + file_path_str + '/src/main.py" ' + str(i)
+        command = command + 'start /B ' + location + ' "' + file_path_str + '/src/main.py" ' + str(i)
         if i != max:
             command = command + "\n"
 
