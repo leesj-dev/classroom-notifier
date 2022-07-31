@@ -1,41 +1,44 @@
 ---
+'headless': False  # type True or False
+'interval_time': 
+'disable_before_months': 12  # months
+'disable_on_postnum': 100
 '1':
-    link: Google Classroom Link No. 1  # Classroom Name
-    login: 12345@gmail.com
-    sendfrom: 23456@naver.com
-    sendto:
-      - abcd@gmail.com
-      - efgh@gmail.com
-      - ijkl@gmail.com
+  link: https://classroom.google.com/u/3/c/NTIzOTYwMDczNDBa  # 18기 공지
+  login: 2010524@hcu.hs.kr
+  sendfrom: leesj913@naver.com
+  sendto:
+    - 2010524@hcu.hs.kr
+    - kevinjun0913@gmail.com
 '2': 
-    link: Google Classroom Link No. 2  # Classroom Name
-    login: 12345@gmail.com
-    sendfrom: 23456@naver.com
-    sendto:
-      - abcd@gmail.com
-      - efgh@gmail.com
-      - ijkl@gmail.com
+  link: Google Classroom Link No. 2  # Classroom Name
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com
 '3': 
-    link: Google Classroom Link No. 3  # Classroom Name
-    login: 12345@gmail.com
-    sendfrom: 23456@naver.com
-    sendto:
-      - abcd@gmail.com
-      - efgh@gmail.com
-      - ijkl@gmail.com
+  link: Google Classroom Link No. 3  # Classroom Name
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com
 '4': 
-    link: Google Classroom Link No. 4  # Classroom Name
-    login: 12345@gmail.com
-    sendfrom: 23456@naver.com
-    sendto:
-      - abcd@gmail.com
-      - efgh@gmail.com
-      - ijkl@gmail.com
+  link: Google Classroom Link No. 4  # Classroom Name
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com
 '5': 
-    link: Google Classroom Link No. 5  # Classroom Name
-    login: 12345@gmail.com
-    sendfrom: 23456@naver.com
-    sendto:
-      - abcd@gmail.com
-      - efgh@gmail.com
-      - ijkl@gmail.com
+  link: Google Classroom Link No. 5  # Classroom Name
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com

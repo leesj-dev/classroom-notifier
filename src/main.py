@@ -23,22 +23,37 @@ elif platform == "win32":
 
 # .env 파일에서 파일 경로와 헤드리스 사용 여부를 불러옴
 load_dotenv()
-headless = os.getenv("headless")
 file_path = os.getenv("file_path")
 if file_path[-1] in ("/", "\\"):
     file_path = file_path[:-1]
 
 # .yaml 파일에서 정보 불러옴
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
-link_dict = yaml.safe_load(yaml_file)
+config_dict = yaml.safe_load(yaml_file)
 number = sys.argv[1]
-used_dict = link_dict[number]
+used_dict = config_dict[number]
 link = used_dict["link"]
 login_id = used_dict["login"]
 login_pw = os.getenv(login_id)
 sendfrom_id = used_dict["sendfrom"]
 sendfrom_pw = os.getenv(sendfrom_id)
 sendto = used_dict["sendto"]  # 자료형 list이므로 주의 필요
+
+# 선택사항 정보: try~except문으로 처리
+try:
+    interval_time = int(config_dict["interval_time"])
+except:
+    interval_time = None
+
+try:
+    disable_before_months = int(config_dict["disable_before_months"])
+except:
+    disable_before_months = None
+
+try:
+    disable_on_postnum = int(config_dict["disable_on_postnum"])
+except:
+    disable_on_postnum = None
 
 # 그래픽 자료형
 imgdict = {
@@ -64,14 +79,15 @@ colordict = {
 # 구글 로그인 차단 우회 - undetected_chromedriver
 def init_driver():
     chromedriver_path = file_path + slash + chromedriver_file
+    headless = config_dict["headless"]
 
-    if headless == "yes":
+    if headless is True:
         options = uc.ChromeOptions()
         options.headless = True
         options.add_argument('--headless')
         driver = uc.Chrome(driver_executable_path=chromedriver_path, options=options)
     
-    elif headless == "no":
+    elif headless is False:
         driver = uc.Chrome(driver_executable_path=chromedriver_path)
 
     driver.get(link)
@@ -92,7 +108,7 @@ def login(driver, login_id, login_pw):
 
 
 # 끝까지 스크롤링 및 전체 게시글 수 체크
-def Scroll():
+def scroll_page():
     last_height = driver.execute_script("return document.body.scrollHeight")
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -108,7 +124,7 @@ def Scroll():
 
 
 # 색상 추출
-def colorExtractor():
+def color_extractor():
     color_rgba = driver.find_element(By.XPATH, "(//*[@class='xHPsid'])[last()]/div[1]/a").value_of_css_property("color")
     color_rgba = color_rgba[color_rgba.find("(") + 1 : color_rgba.find(")")]
     color_list = color_rgba.split(', ')
@@ -124,10 +140,10 @@ def colorExtractor():
 
 
 # xpath 경로 탐색
-def elementFinder(number, type, path, tofind):
-    if type in ("main", "공지"):
+def element_finder(number, post_type, path, tofind):
+    if post_type in ("main", "공지"):
         total = "(//div[contains(@class, 'qhnNic LBlAUc Aopndd TIunU')])[" + number + "]" + path
-    elif type == "link_copy":
+    elif post_type == "link_copy":
         total = "(//*[@class='z80M1 FeRvI'])[last()-1]" + path
     else:
         total = "(//*[@class='fJ1Vac'])[last()]" + path
@@ -145,30 +161,30 @@ def elementFinder(number, type, path, tofind):
 
 
 # 게시물 종류 추출 (단, 공지는 제외)
-def typeExtractor(postnum_str):
-    title = elementFinder(postnum_str, "main", "/div[1]/div/div[3]/div/div/span", "text")
-    type = title[title.find("게시") - 3 : title.find("게시") - 1]
-    return type
+def type_extractor(postnum_str):
+    title = element_finder(postnum_str, "main", "/div[1]/div/div[3]/div/div/span", "text")
+    post_type = title[title.find("게시") - 3 : title.find("게시") - 1]
+    return post_type
 
 
 # 게시자 추출
-def uploaderExtractor(postnum_str, type):
-    if type == "공지":
-        uploader = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/div/div/span", "text")
+def uploader_extractor(postnum_str, post_type):
+    if post_type == "공지":
+        uploader = element_finder(postnum_str, post_type, "/div[1]/div[1]/div[1]/div/div/span", "text")
     else:
-        uploader = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[1]", "text")
+        uploader = element_finder(postnum_str, post_type, "/div[2]/div[1]/div[1]/div[2]/div[1]", "text")
 
     return uploader
 
 
 # 최초 날짜 추출 (이것을 활용하는 부분은 개발 예정)
-def initialDateExtractor(postnum_str, type):
+def date_extractor_initial(postnum_str, post_type):
     end = "("
 
-    if type == "공지":
-        mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
+    if post_type == "공지":
+        mod = element_finder(postnum_str, post_type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
     else:
-        mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
+        mod = element_finder(postnum_str, post_type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
 
     if end in mod:
         date = mod[0 : mod.find(end) - 1]
@@ -179,14 +195,14 @@ def initialDateExtractor(postnum_str, type):
 
 
 # 게시/수정 날짜 추출
-def finalDateExtractor(postnum_str, type):
+def date_extractor_final(postnum_str, post_type):
     start = "("
     end = "에"
 
-    if type == "공지":
-        mod = elementFinder(postnum_str, type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
+    if post_type == "공지":
+        mod = element_finder(postnum_str, post_type, "/div[1]/div[1]/div[1]/span/span[2]", "text")
     else:
-        mod = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
+        mod = element_finder(postnum_str, post_type, "/div[2]/div[1]/div[1]/div[2]/div[3]", "text")
 
     if end in mod:
         date = mod[mod.find(start) + 1 : mod.find(end)]
@@ -197,14 +213,14 @@ def finalDateExtractor(postnum_str, type):
 
 
 # 본문 추출
-def bodyExtractor(postnum_str, type, encoding):
-    if type == "공지":
-        body = elementFinder(postnum_str, type, "/div[1]/div[2]/div[1]/html-blob/span", encoding)
+def body_extractor(postnum_str, post_type, encoding):
+    if post_type == "공지":
+        body = element_finder(postnum_str, post_type, "/div[1]/div[2]/div[1]/html-blob/span", encoding)
 
     else:
-        body1 = elementFinder(postnum_str, type, "/div[2]/div[1]/div[1]/div[1]/h1/html-blob/span", encoding)
+        body1 = element_finder(postnum_str, post_type, "/div[2]/div[1]/div[1]/div[1]/h1/html-blob/span", encoding)
         try:
-            body2 = elementFinder(postnum_str, type, "/div[2]/div[1]/div[2]/html-blob/span", encoding)
+            body2 = element_finder(postnum_str, post_type, "/div[2]/div[1]/div[2]/html-blob/span", encoding)
         except:
             body2 = ""
         body = body1 + "\n" + body2
@@ -213,8 +229,8 @@ def bodyExtractor(postnum_str, type, encoding):
 
 
 # 첨부파일 경로 검색
-def xpathFinder(type, divnum, j):
-    if type == "공지":
+def xpath_finder(post_type, divnum, j):
+    if post_type == "공지":
         xpath = "/div[1]/div[2]/div[2]/div[1]/div[" + divnum + "]/div[" + j + "]/a"
     else:
         xpath = "/div[2]/div[2]/div[1]/div/div[" + j + "]/div/a"
@@ -223,14 +239,14 @@ def xpathFinder(type, divnum, j):
 
 
 # 첨부파일 추출
-def attachExtractor(postnum_str, type):
+def attach_extractor(postnum_str, post_type):
     attach = ()
     flg = False
 
     for divnum in ["1", "2"]:
         try:  # 첨부파일이 1개인 경우
-            xpath = xpathFinder(type, divnum, j)
-            id = elementFinder(postnum_str, type, xpath, "href")
+            xpath = xpath_finder(post_type, divnum, j)
+            id = element_finder(postnum_str, post_type, xpath, "href")
             driver.find_element(By.XPATH, xpath).get_attribute("href")
             driver.implicitly_wait(0.5)
             attach = attach + (id,)
@@ -239,14 +255,14 @@ def attachExtractor(postnum_str, type):
             pass
 
     if flg is False:  # 첨부파일이 없거나 2개 이상인 경우
-        if type == "공지":
+        if post_type == "공지":
             for divnum in ["1", "2"]:
                 i = 1
                 while True:
                     j = str(i)
                     try:  # 첨부파일이 2개 이상인 경우
-                        xpath = xpathFinder(type, divnum, j)
-                        id = elementFinder(postnum_str, type, xpath, "href")
+                        xpath = xpath_finder(post_type, divnum, j)
+                        id = element_finder(postnum_str, post_type, xpath, "href")
                         driver.implicitly_wait(0.5)
                         attach = attach + (id,)
                         i = i + 1
@@ -258,8 +274,8 @@ def attachExtractor(postnum_str, type):
             while True:
                 j = str(i)
                 try:  # 첨부파일이 2개 이상인 경우
-                    xpath = xpathFinder(type, divnum, j)
-                    id = elementFinder(postnum_str, type, xpath, "href")
+                    xpath = xpath_finder(post_type, divnum, j)
+                    id = element_finder(postnum_str, post_type, xpath, "href")
                     driver.implicitly_wait(0.5)
                     attach = attach + (id,)
                     i = i + 1
@@ -269,24 +285,75 @@ def attachExtractor(postnum_str, type):
     return attach
 
 
+# 게시물 최종 수정 날짜를 비교하여 현재 날짜보다 1년 이상 전 게시물은 비교하지 않음
+def compare_date(date):
+    if disable_before_months is not None:
+        if disable_before_months > 0 and "." in date:
+            disable_years, disable_months = divmod(disable_before_months, 12)
+
+            date = date + " "  # "2021. 12. 8." 꼴로 표시되어 있어 split을 용이하게 하기 위해 space 하나 추가시킴
+            date_list = date.split(". ", 3)
+            post_year = int(date_list[0])
+            post_month = int(date_list[1])
+            post_day = int(date_list[2])
+            current_year = datetime.now(timezone("Asia/Seoul")).year
+            current_month = datetime.now(timezone("Asia/Seoul")).month
+            current_day = datetime.now(timezone("Asia/Seoul")).day
+
+            post_date = datetime(post_year, post_month, post_day)
+            comparison_date = datetime(current_year - disable_years, current_month - disable_months, current_day)
+
+            output = post_date > comparison_date
+
+        else:
+            output = True
+
+    else:
+        output = True
+
+    return output
+
+
+# 사전에 추가
+def dict_add(postnum_int, postnum_str, post_type, pdict):
+    post_uploader = uploader_extractor(postnum_str, post_type)
+    post_date = date_extractor_final(postnum_str, post_type)
+
+    if compare_date(post_date) is False:
+        break_parameter = True
+    else:
+        break_parameter = False
+    
+    post_body_HTML = body_extractor(postnum_str, post_type, "innerHTML")
+    post_body_text = body_extractor(postnum_str, post_type, "text")
+    post_attach = attach_extractor(postnum_str, post_type)
+    plist = (post_type, post_uploader, post_date, post_body_HTML, post_body_text, post_attach)
+    pdict.update({postnum_int: plist})  # 이 과정에서 dictionary에 계속 자료를 추가하고 있으므로 따로 dictionary에 대한 리턴값이 필요하지 않음
+
+    return break_parameter
+
+
 # 프로세스 실행
-def Process():
+def process():
     driver.implicitly_wait(10)
-    time.sleep(3)
-    Scroll()
+    scroll_page()
 
     # 총 게시글 수 세기
     postnum_int = 1
     while True:
         postnum_str = str(postnum_int)
         try:
-            elementFinder(postnum_str, "main", "", "self")
+            element_finder(postnum_str, "main", "", "self")
             driver.implicitly_wait(1)
         except:
             postmax = postnum_int - 1
             break
 
         postnum_int = postnum_int + 1
+        if disable_on_postnum is not None:
+            if postnum_int == disable_on_postnum:
+                postmax = postnum_int
+                break
 
     # 빈 딕셔너리 생성
     pdict = {}
@@ -295,32 +362,26 @@ def Process():
     while True:
         postnum_str = str(postnum_int)
         try:
-            errorchk = elementFinder(postnum_str, "main", "", "jsaction")
+            errorchk = element_finder(postnum_str, "main", "", "jsaction")
             driver.implicitly_wait(1)
         except:  # 게시물이 삭제되었을 때 postmax에서 예외가 발생하기 때문
             break
 
         if errorchk is None:
             post_type = "공지"
-            post_uploader = uploaderExtractor(postnum_str, post_type)
-            post_date = finalDateExtractor(postnum_str, post_type)
-            post_body_HTML = bodyExtractor(postnum_str, post_type, "innerHTML")
-            post_body_text = bodyExtractor(postnum_str, post_type, "text")
-            post_attach = attachExtractor(postnum_str, post_type)
-            plist = (post_type, post_uploader, post_date, post_body_HTML, post_body_text, post_attach)
-            pdict.update({postnum_int: plist})
+            break_parameter = dict_add(postnum_int, postnum_str, post_type, pdict)
+            if break_parameter is True:
+                break
 
         else:
-            post_type = typeExtractor(postnum_str)
-            elementFinder(postnum_str, "main", "", "click")
+            post_type = type_extractor(postnum_str)
+            element_finder(postnum_str, "main", "", "click")
+            driver.implicitly_wait(1)
             time.sleep(2)
-            post_uploader = uploaderExtractor(postnum_str, post_type)
-            post_date = finalDateExtractor(postnum_str, post_type)
-            post_body_HTML = bodyExtractor(postnum_str, post_type, "innerHTML")
-            post_body_text = bodyExtractor(postnum_str, post_type, "text")
-            post_attach = attachExtractor(postnum_str, post_type)
-            plist = (post_type, post_uploader, post_date, post_body_HTML, post_body_text, post_attach)
-            pdict.update({postnum_int: plist})
+
+            break_parameter = dict_add(postnum_int, postnum_str, post_type, pdict)
+            if break_parameter is True:
+                break
 
             driver.execute_script("window.history.go(-1)")
             driver.implicitly_wait(2)
@@ -335,7 +396,7 @@ def Process():
 
 
 # 메일 내용 가공 및 전송
-def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_or_del_date, post_body_HTML, post_body_text):
+def send_msg(status, mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_or_del_date, post_body_HTML, post_body_text):
     message = open(mail_path, "r", encoding="utf-8").read()
 
     if post_type == "공지":
@@ -382,8 +443,8 @@ def SendMsg(status, mail_path, room_name, room_color, post_type, post_uploader, 
 
 
 # 게시물 수정 시
-def MsgEdited(pdict_before, pdict_after, room_name):
-    room_color = colorExtractor()
+def msg_edited(pdict_before, pdict_after, room_name):
+    room_color = color_extractor()
     set_before = set(pdict_before.items())
     set_after = set(pdict_after.items())
     diff = dict(set_after - set_before)
@@ -397,21 +458,21 @@ def MsgEdited(pdict_before, pdict_after, room_name):
 
         # 주소 복사
         if post_type == "공지":
-            elementFinder(key_str, "main", "/div[1]/div[1]/div[4]/div/div/div", "click")
+            element_finder(key_str, "main", "/div[1]/div[1]/div[4]/div/div/div", "click")
         else:
-            elementFinder(key_str, "main", "/div[1]/div/div[6]/div/div/div", "click")
+            element_finder(key_str, "main", "/div[1]/div/div[6]/div/div/div", "click")
 
         time.sleep(1)
-        elementFinder(key_str, "link_copy", "", "click")
+        element_finder(key_str, "link_copy", "", "click")
         post_postlink = pyclip.paste(text=True)
         pyclip.clear()
         mail_path = file_path + slash + "src" + slash + "mail_edited.html"
-        SendMsg("수정", mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
+        send_msg("수정", mail_path, room_name, room_color, post_type, post_uploader, post_postlink, post_date, post_body_HTML, post_body_text)
 
 
 # 게시물 삭제 시
-def MsgRemoved(pdict_before, pdict_after, room_name):
-    room_color = colorExtractor()
+def msg_removed(pdict_before, pdict_after, room_name):
+    room_color = color_extractor()
     set_before = set(pdict_before.values())
     set_after = set(pdict_after.values())
     diff = list(set_before - set_after)
@@ -422,49 +483,62 @@ def MsgRemoved(pdict_before, pdict_after, room_name):
         post_body_text = val[4]
         del_date = datetime.now(timezone("Asia/Seoul")).strftime("%-m월 %-d일")
         mail_path = file_path + slash + "src" + slash + "mail_deleted.html"
-        SendMsg("삭제", mail_path, room_name, room_color, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
+        send_msg("삭제", mail_path, room_name, room_color, post_type, post_uploader, "", del_date, post_body_HTML, post_body_text)
+
+
+# 자정이 되면 날짜 표기 방식이 바뀌므로, 딕셔너리 비교 시 날짜는 빼고 비교함
+def date_removed(pdict):
+    for key, val in pdict.items():
+        val = val[0:2] + val[3:6]
+        pdict[key] = val
+    
+    return(pdict)
 
 
 # main 함수
 if __name__ == "__main__":
     driver = init_driver()
     login(driver, login_id, login_pw)
+    room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
+    current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+    print("Classroom Notifier starting on: '" + room_name + "'. [" + current_time + "]")
 
     # 최초 딕셔너리
-    pdict_1 = Process()
+    pdict_1 = process()
 
     # 전후 비교
     while True:
-        time.sleep(3)
+        time.sleep(interval_time)
         driver.refresh()
-        pdict_2 = Process()
+        pdict_2 = process()
+        
+        if date_removed(pdict_1) != date_removed(pdict_2):
+            driver.refresh()  # 정상적인 경우가 아니므로(수정/삭제), 이 때는 interval_time을 따르지 않고 바로 refresh함
+            pdict_3 = process()  # 모두 로딩될 때까지 기다려도 간혹 페이지 로딩이 끝까지 되지 않은 채로 크롤링될 때가 있음. 버그 예방을 위해 한 번 더 검증
+            room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text  # 클래스룸명이 바뀔 수 있으므로, 수시로 체크해야 함
+            current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
 
-        if pdict_1 != pdict_2:
-            time.sleep(3)
-            driver.refresh()
-            pdict_3 = Process()  # 모두 로딩될 때까지 기다려도 간혹 페이지 로딩이 끝까지 되지 않은 채로 크롤링될 때가 있음. 버그 예방을 위해 한 번 더 검증
-            room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
-
-            if pdict_1 == pdict_3:
-                print("버그 발견: '" + room_name + "'. [" + datetime.now().strftime("%H:%M:%S") + "]")
+            if date_removed(pdict_1) == date_removed(pdict_3):
+                print("버그 발견: '" + room_name + "' [" + current_time + "]")
             
             else:
                 if len(pdict_1) > len(pdict_3):
-                    print("삭제된 게시물 감지: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
-                    MsgRemoved(pdict_1, pdict_3, room_name)
+                    print("삭제된 게시물 감지: '" + room_name + "' [" + current_time + "]")  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                    msg_removed(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 elif len(pdict_1) == len(pdict_3):
-                    print("변경된 게시물 감지: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
-                    MsgEdited(pdict_1, pdict_3, room_name)
+                    print("변경된 게시물 감지: '" + room_name + "' [" + current_time + "]")
+                    msg_edited(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
 
                 else:
-                    print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
+                    print("새로운 게시물 감지. 클래스룸에서 발신된 메일을 확인하세요: '" + room_name + "' [" + current_time + "]")
             
             pdict_1 = pdict_3
 
         else:
             room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
-            print("변경사항 없음: '" + room_name + "' [" + datetime.now().strftime("%H:%M:%S") + "]")
+            current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+            print("변경사항 없음: '" + room_name + "' [" + current_time + "]")
             pdict_1 = pdict_2
