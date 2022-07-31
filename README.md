@@ -43,7 +43,8 @@ Add your downloaded chromedriver to the directory where you put the other files.
 * `'disable_before_months'` is the option to disable crawling Classroom posts that have been posted before a certain time period. If you type `12`, it does not crawl posts that are over 12 months old.
 * `'disable_on_postnum'` is the option to crawl Classroom posts until the number of total posts has reached a  certain number. If you type `100`, it crawls posts until the 100th recent post. 
 
-*Note: Options on `'interval_time'`, `'disable_before_months'`, and `'disable_on_postnum'` is not mandatory, so you can just leave this as a blank.*
+*Note: While you must type `True` or `False` on `'headless'`, options on the other three—`'interval_time'`, `'disable_before_months'`, and `'disable_on_postnum'`—are not mandatory, so you can just leave them as blanks.*
+
 * `'1'`, `'2'`, `'3'`, ... are the main options regarding the login and email information. Remember that the **key**s *must* be `'1'`, `'2'`, `'3'`, and so forth.
   * In `link`, paste the Google Classroom links. You can add optional comments regarding the name of the classroom corresponding to the links if you'd like.
   * In `login`, type the Google account that you are going to crawl with.
