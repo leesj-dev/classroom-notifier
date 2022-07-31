@@ -43,7 +43,7 @@ sendto = used_dict["sendto"]  # 자료형 list이므로 주의 필요
 try:
     interval_time = int(config_dict["interval_time"])
 except:
-    interval_time = None
+    interval_time = 0
 
 try:
     disable_before_months = int(config_dict["disable_before_months"])

@@ -21,7 +21,6 @@ You also have to add the line `file_path` and put the directory where the file i
 * `"your email address 2" = "your password"`
 * `"your email address 3" = "your password"`
 * `file_path =` the directory of your file where your `.env` file is
-* `headless =` `yes` to use Headless mode; `no` to not use it.
 
 For example, the result of the `.env` file would be:
 ```
@@ -40,9 +39,23 @@ Go to Help > About Google Chrome.
 Add your downloaded chromedriver to the directory where you put the other files.
 
 ### 5. Add your configurations to `config.yaml`.
-Remember that the **key**s *must* be `"1"`, `"2"`, `"3"`, and so forth. Put the Google Classroom links in `link`, and the Google account that you are going to crawl with in `login`. Put your NAVER account at `sendfrom`, and the recipients of your notification emails at `sendto`, as a list. You can add optional comments regarding the name of the classroom corresponding to the links.
+* `'headless'` is the option to whether enable headless mode or not; type `True` to enable, or `False` to disable.
+* `'interval_time'` is the option to set an interval between refreshing Classrooms. If you type `10`, it means that the code will wait for 10 seconds before proceeding to the next loop.
+* `'disable_before_months'` is the option to disable crawling Classroom posts that have been posted before a certain time period. If you type `12`, it does not crawl posts that are over 12 months old.
+* `'disable_on_postnum'` is the option to crawl Classroom posts until the number of total posts has reached a  certain number. If you type `100`, it crawls posts until the 100th recent post. 
+*Note: Options on `'interval_time'`, `'disable_before_months'`, and `'disable_on_postnum'` is not mandatory, so you can just leave this as a blank.*
+* `'1'`, `'2'`, `'3'`, ... are the main options regarding the login and email information. Remember that the **key**s *must* be `'1'`, `'2'`, `'3'`, and so forth.
+  * In `link`, paste the Google Classroom links. You can add optional comments regarding the name of the classroom corresponding to the links if you'd like.
+  * In `login`, type the Google account that you are going to crawl with.
+  * In `sendfrom`, type your NAVER account to send the notification emails from.
+  * In `sendto`, type your recipients of your notification emails as a list. 
+
 ```
 ---
+'headless': False
+'interval_time': 10
+'disable_before_months': 12
+'disable_on_postnum': 100
  '1':
    link: https://classroom.google.com/c/123456789  # Mathematics
    login: 12345@gmail.com
@@ -72,6 +85,6 @@ You may need to quit each Chrome window after you stop executing the code.
 The chromedriver windows *do not* get closed automatically.
 
 ### Note
-You can delete line No. 66 and edit line No. 72 & 75 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
+You can delete line No. 66 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
 Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is *not recommended*.
 
