@@ -28,7 +28,6 @@ For example, the result of the `.env` file would be:
 456@gmail.com = asdfg
 789@naver.com = qwretyuiop
 file_path = /Documents/VS\ Code/classroom-notifier
-headless = yes
 ```
 
 ### 4. Check your Google Chrome version and download chromedriver.
@@ -43,6 +42,7 @@ Add your downloaded chromedriver to the directory where you put the other files.
 * `'interval_time'` is the option to set an interval between refreshing Classrooms. If you type `10`, it means that the code will wait for 10 seconds before proceeding to the next loop.
 * `'disable_before_months'` is the option to disable crawling Classroom posts that have been posted before a certain time period. If you type `12`, it does not crawl posts that are over 12 months old.
 * `'disable_on_postnum'` is the option to crawl Classroom posts until the number of total posts has reached a  certain number. If you type `100`, it crawls posts until the 100th recent post. 
+
 *Note: Options on `'interval_time'`, `'disable_before_months'`, and `'disable_on_postnum'` is not mandatory, so you can just leave this as a blank.*
 * `'1'`, `'2'`, `'3'`, ... are the main options regarding the login and email information. Remember that the **key**s *must* be `'1'`, `'2'`, `'3'`, and so forth.
   * In `link`, paste the Google Classroom links. You can add optional comments regarding the name of the classroom corresponding to the links if you'd like.
@@ -56,20 +56,20 @@ Add your downloaded chromedriver to the directory where you put the other files.
 'interval_time': 10
 'disable_before_months': 12
 'disable_on_postnum': 100
- '1':
-   link: https://classroom.google.com/c/123456789  # Mathematics
-   login: 12345@gmail.com
-   sendfrom: 23456@naver.com
-   sendto:
-     - abcd@gmail.com
- '2': 
-   link: https://classroom.google.com/c/abcdefgh  # Physics
-   login: 12345@gmail.com
-   sendfrom: 23456@naver.com
-   sendto:
-     - abcd@gmail.com
-     - efgh@gmail.com
-     - ijkl@gmail.com
+'1':
+  link: https://classroom.google.com/c/123456789  # Mathematics
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+'2': 
+  link: https://classroom.google.com/c/abcdefgh  # Physics
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
+  sendto:
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com
 ```
 
 ### 6. Run `generator.py` to create a shell/batch script.
