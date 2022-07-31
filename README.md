@@ -37,6 +37,9 @@ Go to Help > About Google Chrome.
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system.
 Add your downloaded chromedriver to the directory where you put the other files.
 
+/Note: You can delete line No. 81 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
+Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is **not recommended**/.
+
 ### 5. Add your configurations to `config.yaml`.
 * `'headless'` is the option to whether enable headless mode or not; type `True` to enable, or `False` to disable.
 * `'interval_time'` is the option to set an interval between refreshing Classrooms. If you type `10`, it means that the code will wait for 10 seconds before proceeding to the next loop.
@@ -84,8 +87,3 @@ For Windows users, open Command Prompt, move to the directory, and type `src/run
 
 You may need to quit each Chrome window after you stop executing the code.
 The chromedriver windows *do not* get closed automatically.
-
-### Note
-You can delete line No. 81 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
-Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is *not recommended*.
-
