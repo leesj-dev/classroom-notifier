@@ -86,6 +86,6 @@ You may need to quit each Chrome window after you stop executing the code.
 The chromedriver windows *do not* get closed automatically.
 
 ### Note
-You can delete line No. 66 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
+You can delete line No. 81 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
 Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is *not recommended*.
 
