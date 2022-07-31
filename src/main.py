@@ -24,7 +24,7 @@ elif platform == "win32":
 # .env 파일에서 파일 경로와 헤드리스 사용 여부를 불러옴
 load_dotenv()
 file_path = os.getenv("file_path")
-if file_path[-1] in ("/", "\\"):
+if file_path[-1] in ("/", "\\"):  # 마지막 슬래시 제거
     file_path = file_path[:-1]
 
 # .yaml 파일에서 정보 불러옴

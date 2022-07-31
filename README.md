@@ -27,7 +27,7 @@ For example, the result of the `.env` file would be:
 123@gmail.com = qwerty
 456@gmail.com = asdfg
 789@naver.com = qwretyuiop
-file_path = /Documents/VS\ Code/classroom-notifier
+file_path = /Documents/VS Code/classroom-notifier
 ```
 
 ### 4. Check your Google Chrome version and download chromedriver.
