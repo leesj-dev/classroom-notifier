@@ -65,7 +65,7 @@ imgdict = {
 
 # 색상 자료형 (클래스룸에서는 key 색상만 구할 수 있으므로 value 색상을 따로 구해야 함)
 colordict = {
-    # room & 열기 # 선 & 원
+    # room & 열기  # 선 & 원
     "#174ea6": "#1967d2",  # Dark Blue
     "#137333": "#1e8e3e",  # Green
     "#b80672": "#e52592",  # Pink
@@ -290,7 +290,7 @@ def compare_date(date):
     if disable_before_months is not None:
         if disable_before_months > 0 and "." in date:
             disable_years, disable_months = divmod(disable_before_months, 12)
-            date = (date + " ")  # "2021. 12. 8." 꼴로 표시되어 있어 split을 용이하게 하기 위해 space를 하나 추가시킴
+            date = (date + " ")  # 클래스룸에는 "2021. 12. 8." 꼴로 표시되어 있어 split을 용이하게 하기 위해 space를 하나 추가시킴
             date_list = date.split(". ", 3)
             post_year = int(date_list[0])
             post_month = int(date_list[1])
@@ -322,7 +322,7 @@ def dict_add(postnum_int, postnum_str, post_type, pdict):
     post_body_HTML = body_extractor(postnum_str, post_type, "innerHTML")
     post_body_text = body_extractor(postnum_str, post_type, "text")
     post_attach = attach_extractor(postnum_str, post_type)
-    plist = (post_type, post_uploader, post_date, post_body_HTML, post_body_text, post_attach) # dictionary에 계속 자료를 추가하고 있으므로 따로 리턴값이 필요하지 않음
+    plist = (post_type, post_uploader, post_date, post_body_HTML, post_body_text, post_attach)  # dictionary에 계속 자료를 추가하고 있으므로 따로 리턴값이 필요하지 않음
     pdict.update({postnum_int: plist})
 
     return break_parameter
@@ -398,7 +398,7 @@ def send_msg(status, mail_path, room_name, room_color, post_type, post_uploader,
         message = message.replace("${body}", post_body_HTML)
         post_smalltext = '<tr height="0"></tr>'
     else:
-        post_title = post_body_HTML.split("\n", 1)[0]   # \n을 기준으로 최대 1번 쪼갠 뒤 그 중 첫번째(0번째) 부분
+        post_title = post_body_HTML.split("\n", 1)[0]  # \n을 기준으로 최대 1번 쪼갠 뒤 그 중 첫번째(0번째) 부분
         message = message.replace("${body}", post_title)
         post_smalltext = (
             '<tr height="4px"></tr><tr><td style="color:#5f6368;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0.2px">'
@@ -521,8 +521,7 @@ if __name__ == "__main__":
                 print("버그 발견: '" + room_name + "' [" + current_time + "]")
 
             else:
-                if len(pdict_1) > len(pdict_3):
-                    # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
+                if len(pdict_1) > len(pdict_3):  # 삭제와 수정이 동시에 일어난 경우일 수도 있음. 이 경우, 둘 다 삭제된 게시물로 간주함. (버그 해결 예정)
                     print("삭제된 게시물 감지: '" + room_name + "' [" + current_time + "]")
                     msg_removed(pdict_1, pdict_3, room_name)
                     print("메일 발신 완료.")
