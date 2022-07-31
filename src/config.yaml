@@ -1,15 +1,16 @@
 ---
 'headless': False  # type True or False
-'interval_time': 
-'disable_before_months': 12  # months
-'disable_on_postnum': 100
+'interval_time': 10  # seconds (optional)
+'disable_before_months': 12  # months (optional)
+'disable_on_postnum': 100 # number of maximum posts to get (optional)
 '1':
-  link: https://classroom.google.com/u/3/c/NTIzOTYwMDczNDBa  # 18기 공지
-  login: 2010524@hcu.hs.kr
-  sendfrom: leesj913@naver.com
+  link: Google Classroom Link No. 1  # Classroom Name
+  login: 12345@gmail.com
+  sendfrom: 23456@naver.com
   sendto:
-    - 2010524@hcu.hs.kr
-    - kevinjun0913@gmail.com
+    - abcd@gmail.com
+    - efgh@gmail.com
+    - ijkl@gmail.com
 '2': 
   link: Google Classroom Link No. 2  # Classroom Name
   login: 12345@gmail.com
