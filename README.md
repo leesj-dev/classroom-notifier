@@ -11,10 +11,12 @@ Set `POP3/SMTP 사용` to ‘**사용함**’ and click ‘**확인**’.
 
 ### 2. Download the files and install the required packages.
 Download the entire repo as a .zip file, unzip it, and move the folder to a specific directory.
+
 Open Terminal/Command Prompt, move to your directory by `cd "file path"` and type `pip install -r requirements.txt` to install the required packages. You should have Python 3 with pip installed to run this program.
 
 ### 3. Add a `.env` file to the directory where you put the other files.
 On the `.env` file, add **every** email address and password you are going to use for logging in to your Google Classroom **and** for sending emails.
+
 Please include the domain, such as `@gmail.com`, and remember to include both Google and NAVER emails.
 You also have to add the line `file_path` and put the directory where the file is located.
 * `"your email address 1" = "your password"`
@@ -37,8 +39,8 @@ Go to Help > About Google Chrome.
 [Download chromedriver](https://chromedriver.chromium.org/downloads) that matches your Chrome version and operating system.
 Add your downloaded chromedriver to the directory where you put the other files.
 
-/Note: You can delete line No. 81 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
-Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is **not recommended**/.
+*Note: You can delete line No. 81 and edit line No. 88 & 91 to be `driver = uc.Chrome(options=options)` and `driver = uc.Chrome`, respectively, instead of downloading chromedriver manually.
+Note that this would lead to downloading chromedriver every time you execute the Python code, and your Chrome browser should be updated to the latest version; therefore this method is **not recommended**.*
 
 ### 5. Add your configurations to `config.yaml`.
 * `'headless'` is the option to whether enable headless mode or not; type `True` to enable, or `False` to disable.
@@ -78,7 +80,7 @@ Note that this would lead to downloading chromedriver every time you execute the
 
 ### 6. Run `generator.py` to create a shell/batch script.
 Open Terminal/Command Prompt, move to your file directory by `cd "file path"` and type `python3 src/generator.py`.
-Every time you change `config.yaml`, you need to re-run `generator.py` in order to renew `run.sh` / `run.bat`.
+Every time you change `config.yaml`, you need to re-run `generator.py` in order to renew `run.sh` or `run.bat`.
 
 ### 7. Run `run.sh` or `run.bat`.
 For Mac/Linux users, open Terminal, move to your directory and type `source src/run.sh`.
