@@ -30,9 +30,9 @@ if file_path[-1] in ("/", "\\"):  # 마지막 슬래시 제거
 # .yaml 파일에서 정보 불러옴
 yaml_file = open(file_path + slash + "src" + slash + "config.yaml")
 config_dict = yaml.safe_load(yaml_file)
-number = argv[1]
-used_dict = config_dict[number]
-link = used_dict["link"]
+argument = argv[1]
+used_dict = config_dict[argument]
+room_link = used_dict["link"]
 login_id = used_dict["login"]
 login_pw = os.getenv(login_id)
 sendfrom_id = used_dict["sendfrom"]
@@ -56,7 +56,7 @@ except:
     disable_on_postnum = None
 
 # 그래픽 자료형
-imgdict = {
+img_dict = {
     "공지": "https://ci4.googleusercontent.com/proxy/lXfhTxxtlRo9jBByRra4CvV04HGPA1vh1Uy69rFI7Tx21qIUYebG3u-5hHb7GcAKaLP2LRTLQ3uAL_GJiwH5aO3KEXRIHCXxJfnH0V4RRRWEJmYoCnwnaoC3HuKMfKk7WOJ5Bjt3Eoi-WSfh6q4M7LGaZDG1BntyDfOOSopwlDhEf74sTAHhQhEdsK1bJHk=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/chat_bubble_outline/v7/white-48dp/2x/gm_chat_bubble_outline_white_48dp.png",
     "자료": "https://ci6.googleusercontent.com/proxy/KwZhwEdkmty0qJcCZZEZ1AgLPNQoi0gB3r7FLNj1-_YhlgY7AHrEcTybc31P1i0i2IFaXgN9Y_KiAoxtJUJcrqyyZn2hTYPOTSjhHqVT8k6KcZAHLZfmmF7mBFg5fpfzy3EotPxANHQGLtYCFlGtRZY=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/book/v8/white-48dp/2x/gm_book_white_48dp.png",
     "질문": "https://ci5.googleusercontent.com/proxy/uwmGFdeqaPUtThLULRQZIBqFlWtXXssiY-rIToedc4g9VKdjLmtRa0sj4Q-XUZNoUmwogKF9UcXA8xkFlEge5yHAoKj4DVnop7J4wEFnCX8lHoY7Jlh_tB_BaUjRQYhocipZ1ClyZRChfqa9f0Wq1ffbAyVxEHlpQnZz=s0-d-e1-ft#https://fonts.gstatic.com/s/i/googlematerialicons/live_help/v6/white-48dp/2x/gm_live_help_white_48dp.png",
@@ -64,7 +64,7 @@ imgdict = {
 }
 
 # 색상 자료형 (클래스룸에서는 key 색상만 구할 수 있으므로 value 색상을 따로 구해야 함)
-colordict = {
+color_dict = {
     # room & 열기  # 선 & 원
     "#174ea6": "#1967d2",  # Dark Blue
     "#137333": "#1e8e3e",  # Green
@@ -79,18 +79,18 @@ colordict = {
 # 구글 로그인 차단 우회 - undetected_chromedriver
 def init_driver():
     chromedriver_path = file_path + slash + chromedriver_file
-    headless = config_dict["headless"]
+    headless_option = config_dict["headless"]
 
-    if headless is True:
+    if headless_option is True:
         options = uc.ChromeOptions()
         options.headless = True
         options.add_argument("--headless")
         driver = uc.Chrome(driver_executable_path=chromedriver_path, options=options)
 
-    elif headless is False:
+    elif headless_option is False:
         driver = uc.Chrome(driver_executable_path=chromedriver_path)
 
-    driver.get(link)
+    driver.get(room_link)
 
     return driver
 
@@ -109,16 +109,16 @@ def login(driver, login_id, login_pw):
 
 # 끝까지 스크롤링 및 전체 게시글 수 체크
 def scroll_page():
-    last_height = driver.execute_script("return document.body.scrollHeight")
+    height_previous = driver.execute_script("return document.body.scrollHeight")
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(2)
-        new_height = driver.execute_script("return document.body.scrollHeight")
+        height_new = driver.execute_script("return document.body.scrollHeight")
 
-        if new_height == last_height:
+        if height_new == height_previous:
             break
 
-        last_height = new_height
+        height_previous = height_new
 
     driver.execute_script("window.scrollTo(0, 0);")
 
@@ -231,9 +231,9 @@ def body_extractor(postnum_str, post_type, encoding):
 # 첨부파일 경로 검색
 def xpath_finder(post_type, divnum, j):
     if post_type == "공지":
-        xpath = "/div[1]/div[2]/div[2]/div[1]/div[" + divnum + "]/div[" + j + "]/a"
+        xpath = "/div[1]/div[2]/div[2]/div[1]/div[" + divnum + "]/div" + j + "/a"
     else:
-        xpath = "/div[2]/div[2]/div[1]/div/div[" + j + "]/div/a"
+        xpath = "/div[2]/div[2]/div[1]/div/div" + j + "/div/a"
 
     return xpath
 
@@ -245,7 +245,7 @@ def attach_extractor(postnum_str, post_type):
 
     for divnum in ["1", "2"]:
         try:  # 첨부파일이 1개인 경우
-            xpath = xpath_finder(post_type, divnum, j)
+            xpath = xpath_finder(post_type, divnum, "")
             id = element_finder(postnum_str, post_type, xpath, "href")
             driver.find_element(By.XPATH, xpath).get_attribute("href")
             driver.implicitly_wait(0.5)
@@ -259,7 +259,7 @@ def attach_extractor(postnum_str, post_type):
             for divnum in ["1", "2"]:
                 i = 1
                 while True:
-                    j = str(i)
+                    j = "[" + str(i) + "]"
                     try:  # 첨부파일이 2개 이상인 경우
                         xpath = xpath_finder(post_type, divnum, j)
                         id = element_finder(postnum_str, post_type, xpath, "href")
@@ -272,7 +272,7 @@ def attach_extractor(postnum_str, post_type):
             divnum = "1"
             i = 1
             while True:
-                j = str(i)
+                j = "[" + str(i) + "]"
                 try:  # 첨부파일이 2개 이상인 경우
                     xpath = xpath_finder(post_type, divnum, j)
                     id = element_finder(postnum_str, post_type, xpath, "href")
@@ -412,15 +412,15 @@ def send_msg(status, mail_path, room_name, room_color, post_type, post_uploader,
         message = message.replace("${postposition}", "를")
 
     message = message.replace("${google_id}", login_id)
-    message = message.replace("${roomlink}", link)
+    message = message.replace("${roomlink}", room_link)
     message = message.replace("${room}", room_name)
     message = message.replace("${color1}", room_color)
-    message = message.replace("${color2}", colordict[room_color])
+    message = message.replace("${color2}", color_dict[room_color])
     message = message.replace("${uploader}", post_uploader)
     message = message.replace("${type}", post_type)
     message = message.replace("${date}", post_or_del_date)  # 수정된 게시물: post_date, 삭제된 게시물: del_date
     message = message.replace("${postlink}", post_postlink)  # 수정된 게시물에만 존재
-    message = message.replace("${imgsrc}", imgdict[post_type])
+    message = message.replace("${imgsrc}", img_dict[post_type])
     message = message.replace("${smalltext}", post_smalltext)
 
     # 메일 제목
