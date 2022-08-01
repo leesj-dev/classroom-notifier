@@ -3,7 +3,7 @@
 'interval_time': 10  # seconds (optional)
 'disable_before_months': 12  # months (optional)
 'disable_on_postnum': 100 # number of maximum posts to get (optional)
-'2': 
+'1': 
   link: Google Classroom Link No. 1  # Classroom Name
   login: 12345@gmail.com
   sendfrom: 23456@naver.com
