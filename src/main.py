@@ -514,7 +514,9 @@ if __name__ == "__main__":
         pdict_2 = process()
 
         if date_removed(pdict_1) != date_removed(pdict_2):
-            driver.refresh()  # 정상적인 경우가 아니므로(수정/삭제), 이 때는 interval_time을 따르지 않고 바로 refresh함
+            driver.refresh() 
+            driver.implicitly_wait(5)
+            time.sleep(2)   # 정상적인 경우가 아니므로(수정/삭제), 이 때는 interval_time을 따르지 않고 바로 refresh함
             pdict_3 = process()  # 모두 로딩될 때까지 기다려도 간혹 페이지 로딩이 끝까지 되지 않은 채로 크롤링될 때가 있음. 버그 예방을 위해 한 번 더 검증
             current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
 
