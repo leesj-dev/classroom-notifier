@@ -509,7 +509,8 @@ if __name__ == "__main__":
     while True:
         driver.refresh()
         driver.implicitly_wait(5)
-        time.sleep(interval_time + 2)  # interval이 0초면 로딩이 끝까지 안 되었을 수 있음
+        time.sleep(2)  # interval이 0초면 로딩이 끝까지 안 되었을 수 있음
+        time.sleep(interval_time)
         room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
         pdict_2 = process()
 
