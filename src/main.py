@@ -104,7 +104,7 @@ def login(driver, login_id, login_pw):
     driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(login_pw)
     driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button').send_keys(Keys.RETURN)
     driver.implicitly_wait(10)
-    time.sleep(3)
+    time.sleep(5)
 
 
 # 끝까지 스크롤링 및 전체 게시글 수 체크
@@ -507,14 +507,15 @@ if __name__ == "__main__":
 
     # 전후 비교
     while True:
-        time.sleep(interval_time)
         driver.refresh()
+        driver.implicitly_wait(5)
+        time.sleep(interval_time + 2)  # interval이 0초면 로딩이 끝까지 안 되었을 수 있음
+        room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
         pdict_2 = process()
 
         if date_removed(pdict_1) != date_removed(pdict_2):
             driver.refresh()  # 정상적인 경우가 아니므로(수정/삭제), 이 때는 interval_time을 따르지 않고 바로 refresh함
             pdict_3 = process()  # 모두 로딩될 때까지 기다려도 간혹 페이지 로딩이 끝까지 되지 않은 채로 크롤링될 때가 있음. 버그 예방을 위해 한 번 더 검증
-            room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text  # 클래스룸명이 바뀔 수 있으므로, 수시로 체크해야 함
             current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
 
             if date_removed(pdict_1) == date_removed(pdict_3):
@@ -537,7 +538,6 @@ if __name__ == "__main__":
             pdict_1 = pdict_3
 
         else:
-            room_name = driver.find_element(By.XPATH, "//*[@class='tNGpbb YrFhrf-ZoZQ1 YVvGBb']").text
             current_time = datetime.now().strftime("%H:%M:%S.%f")[:-3]
             print("변경사항 없음: '" + room_name + "' [" + current_time + "]")
             pdict_1 = pdict_2
